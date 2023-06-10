@@ -373,12 +373,11 @@ int OpenFileDescriptor( int stringID, char mode, int *fd )
         pFileName = STRINGBUFFER_fnGet( stringID );
         if( pFileName != NULL )
         {
-            mode = tolower( mode );
-            if( mode == 'r' )
+            if( mode == 'r' || mode == 'R' )
             {
                 openMode = O_RDONLY;
             }
-            else if ( mode == 'w' )
+            else if ( mode == 'w' || mode == 'W' )
             {
                 openMode = O_WRONLY;
             }
