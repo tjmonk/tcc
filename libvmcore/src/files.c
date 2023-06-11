@@ -379,7 +379,7 @@ int OpenFileDescriptor( int stringID, char mode, int *fd )
             }
             else if ( mode == 'w' || mode == 'W' )
             {
-                openMode = O_WRONLY;
+                openMode = O_WRONLY | O_CREAT;
             }
 
             /* get the index for the new file descriptor */
