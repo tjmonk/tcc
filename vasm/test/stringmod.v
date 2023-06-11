@@ -3,7 +3,7 @@
 ; and then reverses the string before truncating it and
 ; appending a string suffix
 
-	JMP G_O
+    JMP G_O
 notice
     DAT "This is a test of the stringbuffer manipulation"
 

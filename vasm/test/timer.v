@@ -1,6 +1,6 @@
 ; "timer" program for the virtual machine.
 
-	JMP G_O
+    JMP G_O
 notice
     DAT "Timer test\n"
 
@@ -13,8 +13,8 @@ sig
 G_O
     MOV R6,0
     MOV R7,10
-	MOV R0, notice
-	WRS R0
+    MOV R0, notice
+    WRS R0
     MOV R0,5000
     MOV R1,1
     STM R1,R0
@@ -47,5 +47,5 @@ count2
     JNZ LOOP
     CTM R4
     JMP LOOP
-	HLT
+    HLT
 
