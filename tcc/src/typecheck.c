@@ -79,9 +79,9 @@ bool TypeErrorDetected( void )
 /*============================================================================*/
 /*  TypeCheck                                                                 */
 /*!
-	Perform Type Checking
+    Perform Type Checking
 
-	The TypeCheck function matches types on the left hand side and right hand
+    The TypeCheck function matches types on the left hand side and right hand
     side of the specified operation.  If the types are compatible, the
     type is returned as the result.  If the types are incompatible, or
     incompatible with the specified operation, then the type TYPE_INVALID
@@ -89,7 +89,7 @@ bool TypeErrorDetected( void )
 
     @param[in]
         root
-			pointer to the root node to type check
+            pointer to the root node to type check
 
     @param[in]
         level
@@ -111,124 +111,124 @@ int TypeCheck(struct Node *root, int level, bool debug)
 
     if( debug == true )
     {
-	    if( level == 0 )
-	    {
-	    	printf("Start of TypeCheck\n");
-	    }
-	}
+        if( level == 0 )
+        {
+            printf("Start of TypeCheck\n");
+        }
+    }
 
     if( root == NULL )
     {
-    	if( debug == true )
-    	{
-		    for(i=0;i<level;i++) fprintf(stdout, "    ");
-	    	printf("TypeCheck: nothing to do \n");
-    	}
-    	return TYPE_INVALID;
+        if( debug == true )
+        {
+            for(i=0;i<level;i++) fprintf(stdout, "    ");
+            printf("TypeCheck: nothing to do \n");
+        }
+        return TYPE_INVALID;
     }
 
-	if( debug == true )
-	{
-	    for(i=0;i<level;i++) fprintf(stdout, "    ");
-	    printf("TypeCheck: root->type = %d\n", root->type);
-	}
+    if( debug == true )
+    {
+        for(i=0;i<level;i++) fprintf(stdout, "    ");
+        printf("TypeCheck: root->type = %d\n", root->type);
+    }
 
     if ( root->type == NUM )
     {
-    	if( ( root->value >= -128 ) && ( root->value <= 127 ) )
-    	{
-    	    return(TYPE_CHAR);
-    	}
+        if( ( root->value >= -128 ) && ( root->value <= 127 ) )
+        {
+            return(TYPE_CHAR);
+        }
 
-    	else if ( ( root->value >= -2147483648LL ) &&
+        else if ( ( root->value >= -2147483648LL ) &&
                   ( root->value <= 2147483647LL ) )
-    	{
-    	    return(TYPE_INT);
-    	}
-    	else
-    	{
-    	    typeError( eVALUE_OUT_OF_RANGE );
-    	    return(TYPE_INVALID);
-    	}
+        {
+            return(TYPE_INT);
+        }
+        else
+        {
+            typeError( eVALUE_OUT_OF_RANGE );
+            return(TYPE_INVALID);
+        }
     }
 
     if( root->type == FLOAT )
     {
-    	return( TYPE_FLOAT );
+        return( TYPE_FLOAT );
     }
 
-	if( root->type == LENGTH )
-	{
-		return( TYPE_INT );
-	}
+    if( root->type == LENGTH )
+    {
+        return( TYPE_INT );
+    }
 
-	if( root->type == HANDLE )
-	{
-		return( TYPE_INT );
-	}
+    if( root->type == HANDLE )
+    {
+        return( TYPE_INT );
+    }
 
-	if( root->type == SYSTEM )
-	{
-		return( TYPE_INT );
-	}
+    if( root->type == SYSTEM )
+    {
+        return( TYPE_INT );
+    }
 
-	if( root->type == CHARAT )
-	{
-		return( TYPE_CHAR );
-	}
+    if( root->type == CHARAT )
+    {
+        return( TYPE_CHAR );
+    }
 
     if ( ( root->type == ID ) || ( root->type == VAR_ID ) ||
-	     ( root->type == PARAM_ID ) || ( root->type == INVOKATION_ID ) ||
-	     ( root->type == LVAL_ID ) || ( root->type == EXTERN_LVAL_ID ) )
+         ( root->type == PARAM_ID ) || ( root->type == INVOKATION_ID ) ||
+         ( root->type == LVAL_ID ) || ( root->type == EXTERN_LVAL_ID ) )
     {
-    	if( root->ident == NULL )
-    	{
-			if( debug == true )
-			{
-			    for(i=0;i<level;i++) fprintf(stdout, "    ");
-	    		printf("cannot get type from ID\n");
-	    	}
+        if( root->ident == NULL )
+        {
+            if( debug == true )
+            {
+                for(i=0;i<level;i++) fprintf(stdout, "    ");
+                printf("cannot get type from ID\n");
+            }
 
-    		return TYPE_INVALID;
-    	}
+            return TYPE_INVALID;
+        }
 
-		if( debug == true )
-		{
-		    for(i=0;i<level;i++) fprintf(stdout, "    ");
-		    printf("root->ident->type = %d\n", root->ident->type);
-		}
+        if( debug == true )
+        {
+            for(i=0;i<level;i++) fprintf(stdout, "    ");
+            printf("root->ident->type = %d\n", root->ident->type);
+        }
 
-	   return(root->ident->type);
+       return(root->ident->type);
     }
 
     if ( root->type == TYPE_STRING )
     {
-    	return(TYPE_STRING);
+        return(TYPE_STRING);
     }
 
     if( root->type == TYPE_FLOAT )
     {
-    	return( TYPE_FLOAT);
+        return( TYPE_FLOAT);
     }
 
     if (root->left)
     {
         type1 = TypeCheck( root->left, level+1, debug );
-		if( debug == true )
-		{
-		    for(i=0;i<level;i++) fprintf(stdout, "    ");
-		    printf("type_left=%d\n", type1);
-		}
+        if( debug == true )
+        {
+            for(i=0;i<level;i++) fprintf(stdout, "    ");
+            printf("type_left=%d\n", type1);
+        }
     }
 
     if (root->right)
     {
         type2 = TypeCheck( root->right, level+1, debug );
-		if( debug == true )
-		{
-		    for(i=0;i<level;i++) fprintf(stdout, "    ");
-		    printf("type_right=%d\n", type2);
-		}
+        if( debug == true )
+        {
+            for(i=0;i<level;i++) fprintf(stdout, "    ");
+            printf("type_right=%d\n", type2);
+        }
     }
 
     if ( ( !( root->left ) ) && ( root->right ))
@@ -248,86 +248,86 @@ int TypeCheck(struct Node *root, int level, bool debug)
 
     if ( ( type1 == TYPE_INVALID ) || ( type2 == TYPE_INVALID ) )
     {
-		if( debug == true )
-		{
-		    for(i=0;i<level;i++) fprintf(stdout, "    ");
-	    	printf("type is invalid\n");
-		}
+        if( debug == true )
+        {
+            for(i=0;i<level;i++) fprintf(stdout, "    ");
+            printf("type is invalid\n");
+        }
 
-	   	return(TYPE_INVALID);
+           return(TYPE_INVALID);
     }
 
     switch(root->type)
     {
         case ASSIGN:
-        	if (type1 == type2)
-        	{
-        	    return ( type1 );
-        	}
-        	else if ( ( type1 == TYPE_INT ) &&
-					  ( type2 == TYPE_BOOL ) )
-        	{
-        	    return( TYPE_INT );
-        	}
-        	else if ( ( type1 == TYPE_INT ) &&
-					  ( type2 == TYPE_CHAR ) )
-        	{
-        	    return( TYPE_CHAR );
-        	}
-        	else if ( ( type1 == TYPE_CHAR ) &&
-					  ( type2 == TYPE_BOOL ) )
-        	{
-        	    return(TYPE_CHAR);
-        	}
-        	else if( ( type1 == TYPE_BOOL ) &&
-					 ( type2 == TYPE_CHAR ) )
-        	{
-        	   return( TYPE_BOOL );
-        	}
-        	else if ( ( type1 == TYPE_BOOL ) &&
-					  ( type2 == TYPE_CHAR ) )
-        	{
-        		return( TYPE_BOOL );
-        	}
-        	else
-        	{
-        	    typeError( eINCOMPATIBLE_ASSIGNMENT_TYPES );
-        	    return ( TYPE_INVALID );
-        	}
-        	break;
+            if (type1 == type2)
+            {
+                return ( type1 );
+            }
+            else if ( ( type1 == TYPE_INT ) &&
+                      ( type2 == TYPE_BOOL ) )
+            {
+                return( TYPE_INT );
+            }
+            else if ( ( type1 == TYPE_INT ) &&
+                      ( type2 == TYPE_CHAR ) )
+            {
+                return( TYPE_CHAR );
+            }
+            else if ( ( type1 == TYPE_CHAR ) &&
+                      ( type2 == TYPE_BOOL ) )
+            {
+                return(TYPE_CHAR);
+            }
+            else if( ( type1 == TYPE_BOOL ) &&
+                     ( type2 == TYPE_CHAR ) )
+            {
+               return( TYPE_BOOL );
+            }
+            else if ( ( type1 == TYPE_BOOL ) &&
+                      ( type2 == TYPE_CHAR ) )
+            {
+                return( TYPE_BOOL );
+            }
+            else
+            {
+                typeError( eINCOMPATIBLE_ASSIGNMENT_TYPES );
+                return ( TYPE_INVALID );
+            }
+            break;
 
-    	case APPEND:
-    		if( type1 != TYPE_STRING )
-    		{
-    			typeError( eINVALID_METHOD_FOR_ARGUMENT_TYPE );
-    			return ( TYPE_INVALID );
-    		}
-    		break;
+        case APPEND:
+            if( type1 != TYPE_STRING )
+            {
+                typeError( eINVALID_METHOD_FOR_ARGUMENT_TYPE );
+                return ( TYPE_INVALID );
+            }
+            break;
 
-    	case TO_FLOAT:
-    		if( ( type2 == TYPE_INT ) ||
-				( type2 == TYPE_CHAR ) )
-    		{
-    			return TYPE_FLOAT;
-    		}
-    		else
-    		{
-        	    typeError ( eCANNOT_CONVERT_TO_FLOAT_TYPE );
-        	    return ( TYPE_INVALID );
-    		}
-    		break;
+        case TO_FLOAT:
+            if( ( type2 == TYPE_INT ) ||
+                ( type2 == TYPE_CHAR ) )
+            {
+                return TYPE_FLOAT;
+            }
+            else
+            {
+                typeError ( eCANNOT_CONVERT_TO_FLOAT_TYPE );
+                return ( TYPE_INVALID );
+            }
+            break;
 
-    	case TO_INT:
-    		if( type2 == TYPE_FLOAT )
-    		{
-    			return TYPE_INT;
-    		}
-    		else
-    		{
-        	    typeError ( eCANNOT_CONVERT_TO_INT_TYPE );
-        	    return ( TYPE_INVALID );
-    		}
-    		break;
+        case TO_INT:
+            if( type2 == TYPE_FLOAT )
+            {
+                return TYPE_INT;
+            }
+            else
+            {
+                typeError ( eCANNOT_CONVERT_TO_INT_TYPE );
+                return ( TYPE_INVALID );
+            }
+            break;
 
         case TIMES_EQUALS:
         case DIV_EQUALS:
@@ -336,217 +336,217 @@ int TypeCheck(struct Node *root, int level, bool debug)
         case AND_EQUALS:
         case OR_EQUALS:
         case XOR_EQUALS:
-        	if ( ( type1 == TYPE_INT ) &&
-				 ( type2 == TYPE_INT ) )
-        	{
-        		root->datatype = TYPE_INT;
-        	    return ( TYPE_INT );
-        	}
-        	else if ( ( type1 == TYPE_CHAR ) &&
-					  ( type2 == TYPE_CHAR ) )
-        	{
-        		root->datatype = TYPE_CHAR;
-        	    return( TYPE_CHAR );
-        	}
-        	else if ( ( type1 == TYPE_INT ) &&
-					  ( type2 == TYPE_CHAR ) )
-        	{
-        		root->datatype = TYPE_INT;
-        	    return( TYPE_INT );
-        	}
-        	else if( ( type1 == TYPE_FLOAT ) &&
-					 ( type2 == TYPE_FLOAT ) )
-        	{
-        		root->datatype = TYPE_FLOAT;
-        		return( TYPE_FLOAT );
-        	}
-        	else
-        	{
-        	    typeError ( eINCOMPATIBLE_ASSIGNMENT_TYPES );
-        	    return ( TYPE_INVALID );
-        	}
-        	break;
+            if ( ( type1 == TYPE_INT ) &&
+                 ( type2 == TYPE_INT ) )
+            {
+                root->datatype = TYPE_INT;
+                return ( TYPE_INT );
+            }
+            else if ( ( type1 == TYPE_CHAR ) &&
+                      ( type2 == TYPE_CHAR ) )
+            {
+                root->datatype = TYPE_CHAR;
+                return( TYPE_CHAR );
+            }
+            else if ( ( type1 == TYPE_INT ) &&
+                      ( type2 == TYPE_CHAR ) )
+            {
+                root->datatype = TYPE_INT;
+                return( TYPE_INT );
+            }
+            else if( ( type1 == TYPE_FLOAT ) &&
+                     ( type2 == TYPE_FLOAT ) )
+            {
+                root->datatype = TYPE_FLOAT;
+                return( TYPE_FLOAT );
+            }
+            else
+            {
+                typeError ( eINCOMPATIBLE_ASSIGNMENT_TYPES );
+                return ( TYPE_INVALID );
+            }
+            break;
 
         case OR:
         case AND:
-        	if ( ( ( type1 == TYPE_INT ) || ( type1 == TYPE_BOOL ||
+            if ( ( ( type1 == TYPE_INT ) || ( type1 == TYPE_BOOL ||
                    ( type1 == TYPE_CHAR ) ) )  &&
-        	    ( ( type2 == TYPE_INT ) || ( type2 == TYPE_BOOL ) ||
+                ( ( type2 == TYPE_INT ) || ( type2 == TYPE_BOOL ) ||
                   ( type2 == TYPE_CHAR ) ) )
-        	{
-        	    return(TYPE_BOOL);
-        	}
-        	else
-        	{
-        	    typeError( eINCOMPATIBLE_OPERAND_TYPES_FOR_LOGICAL_OPERATOR );
-        	    return( TYPE_INVALID );
-        	}
-        	break;
+            {
+                return(TYPE_BOOL);
+            }
+            else
+            {
+                typeError( eINCOMPATIBLE_OPERAND_TYPES_FOR_LOGICAL_OPERATOR );
+                return( TYPE_INVALID );
+            }
+            break;
 
         case XOR:
         case BOR:
         case BAND:
-        	if ( ( type1 == TYPE_INT ) && ( type2 == TYPE_INT ) )
-        	{
-        	    return ( TYPE_INT );
-        	}
-        	else if ( ( type1 == TYPE_INT) && (type2 == TYPE_CHAR))
-        	{
-        	    return ( TYPE_INT );
-        	}
-        	else if ( ( type1 == TYPE_CHAR ) && ( type2 == TYPE_CHAR ) )
-        	{
-        	    return ( TYPE_CHAR );
-        	}
-        	else
-        	{
-        	    typeError( eINCOMPATIBLE_OPERAND_TYPES_FOR_BITWISE_OPERATOR );
-        	    return( TYPE_INVALID);
-        	}
-        	break;
+            if ( ( type1 == TYPE_INT ) && ( type2 == TYPE_INT ) )
+            {
+                return ( TYPE_INT );
+            }
+            else if ( ( type1 == TYPE_INT) && (type2 == TYPE_CHAR))
+            {
+                return ( TYPE_INT );
+            }
+            else if ( ( type1 == TYPE_CHAR ) && ( type2 == TYPE_CHAR ) )
+            {
+                return ( TYPE_CHAR );
+            }
+            else
+            {
+                typeError( eINCOMPATIBLE_OPERAND_TYPES_FOR_BITWISE_OPERATOR );
+                return( TYPE_INVALID);
+            }
+            break;
 
         case EQUALS:
         case NOTEQUALS:
-        	if ( ( ( type1 == TYPE_INT ) || ( type1 == TYPE_CHAR ) ) &&
-        	    ( ( type2 == TYPE_INT ) || ( type2 == TYPE_CHAR ) ) )
-        	{
-        	    return( TYPE_BOOL );
-        	}
+            if ( ( ( type1 == TYPE_INT ) || ( type1 == TYPE_CHAR ) ) &&
+                ( ( type2 == TYPE_INT ) || ( type2 == TYPE_CHAR ) ) )
+            {
+                return( TYPE_BOOL );
+            }
 
-        	else if ( ( ( type1 == TYPE_CHAR ) && ( type2 == TYPE_BOOL ) ) ||
-        		 ( ( type1 == TYPE_BOOL ) && ( type2 == TYPE_CHAR ) ) )
-        	{
-        	    return( TYPE_BOOL );
-        	}
-        	else if( ( type1 == TYPE_FLOAT ) && ( type2 == TYPE_FLOAT ))
-        	{
-        		root->datatype = TYPE_FLOAT;
-        		return( TYPE_FLOAT );
-        	}
-        	else
-        	{
-        	    typeError(eINCOMPATIBLE_OPERAND_TYPES_FOR_RELATIONAL_OPERATOR);
-        	    return( TYPE_INVALID );
-        	}
-        	break;
+            else if ( ( ( type1 == TYPE_CHAR ) && ( type2 == TYPE_BOOL ) ) ||
+                 ( ( type1 == TYPE_BOOL ) && ( type2 == TYPE_CHAR ) ) )
+            {
+                return( TYPE_BOOL );
+            }
+            else if( ( type1 == TYPE_FLOAT ) && ( type2 == TYPE_FLOAT ))
+            {
+                root->datatype = TYPE_FLOAT;
+                return( TYPE_FLOAT );
+            }
+            else
+            {
+                typeError(eINCOMPATIBLE_OPERAND_TYPES_FOR_RELATIONAL_OPERATOR);
+                return( TYPE_INVALID );
+            }
+            break;
 
         case LTE:
         case GTE:
         case LT:
         case GT:
-        	if ( ( ( type1 == TYPE_INT ) || ( type1 == TYPE_CHAR ) ) &&
-        	    ( ( type2 == TYPE_INT ) || ( type2 == TYPE_CHAR ) ) )
-        	{
-        	    return(TYPE_BOOL);
-        	}
-        	else if ( ( ( type1 == TYPE_CHAR ) && ( type2 == TYPE_BOOL ) ) ||
-        		 ( ( type1 == TYPE_BOOL ) && ( type2 == TYPE_CHAR ) ) )
-        	{
-        	    return(TYPE_BOOL);
-        	}
-        	else if( ( type1 == TYPE_FLOAT ) && ( type2 == TYPE_FLOAT ))
-        	{
-        		root->datatype = TYPE_FLOAT;
-        		return( TYPE_FLOAT );
-        	}
-        	else
-        	{
-        	    typeError(eINCOMPATIBLE_OPERAND_TYPES_FOR_RELATIONAL_OPERATOR);
-        	    return( TYPE_INVALID );
-        	}
-        	break;
+            if ( ( ( type1 == TYPE_INT ) || ( type1 == TYPE_CHAR ) ) &&
+                ( ( type2 == TYPE_INT ) || ( type2 == TYPE_CHAR ) ) )
+            {
+                return(TYPE_BOOL);
+            }
+            else if ( ( ( type1 == TYPE_CHAR ) && ( type2 == TYPE_BOOL ) ) ||
+                 ( ( type1 == TYPE_BOOL ) && ( type2 == TYPE_CHAR ) ) )
+            {
+                return(TYPE_BOOL);
+            }
+            else if( ( type1 == TYPE_FLOAT ) && ( type2 == TYPE_FLOAT ))
+            {
+                root->datatype = TYPE_FLOAT;
+                return( TYPE_FLOAT );
+            }
+            else
+            {
+                typeError(eINCOMPATIBLE_OPERAND_TYPES_FOR_RELATIONAL_OPERATOR);
+                return( TYPE_INVALID );
+            }
+            break;
 
         case RSHIFT:
         case LSHIFT:
-        	if ( ( type1 == TYPE_INT ) && ( type2 == TYPE_INT ) )
-        	{
-        	    return( TYPE_INT );
-        	}
+            if ( ( type1 == TYPE_INT ) && ( type2 == TYPE_INT ) )
+            {
+                return( TYPE_INT );
+            }
 
-        	else if ( ( type1 == TYPE_INT ) && ( type2 == TYPE_CHAR ) )
-        	{
-        	    return(TYPE_INT);
-        	}
+            else if ( ( type1 == TYPE_INT ) && ( type2 == TYPE_CHAR ) )
+            {
+                return(TYPE_INT);
+            }
 
-        	else if ( ( type1 == TYPE_INT ) && ( type2 == TYPE_BOOL ) )
-        	{
-        	    return(TYPE_INT);
-        	}
+            else if ( ( type1 == TYPE_INT ) && ( type2 == TYPE_BOOL ) )
+            {
+                return(TYPE_INT);
+            }
 
-        	else if ( ( type1 == TYPE_CHAR ) && ( type2 == TYPE_CHAR ) )
-        	{
-        	    return( TYPE_CHAR );
-        	}
+            else if ( ( type1 == TYPE_CHAR ) && ( type2 == TYPE_CHAR ) )
+            {
+                return( TYPE_CHAR );
+            }
 
-        	else if ( ( type1 == TYPE_CHAR ) && ( type2 == TYPE_BOOL ) )
-        	{
-        	    return( TYPE_CHAR );
-        	}
+            else if ( ( type1 == TYPE_CHAR ) && ( type2 == TYPE_BOOL ) )
+            {
+                return( TYPE_CHAR );
+            }
 
-        	else
-        	{
-        	    typeError( eINCOMPATIBLE_OPERAND_TYPES_FOR_SHIFT_OPERATOR );
-        	    return( TYPE_INVALID );
-        	}
-        	break;
+            else
+            {
+                typeError( eINCOMPATIBLE_OPERAND_TYPES_FOR_SHIFT_OPERATOR );
+                return( TYPE_INVALID );
+            }
+            break;
 
         case INC:
         case DEC:
-        	if ( ( type1 == TYPE_INT ) || ( type2 == TYPE_INT ) )
-        	{
-        	    return(TYPE_INT);
-        	}
+            if ( ( type1 == TYPE_INT ) || ( type2 == TYPE_INT ) )
+            {
+                return(TYPE_INT);
+            }
 
-        	else if ( ( type1 == TYPE_CHAR ) || ( type2 == TYPE_CHAR ) )
-        	{
-        	    return ( TYPE_CHAR );
-        	}
-        	else
-        	{
-        	    typeError( eTYPE_CANT_BE_INCREMENTED_DECREMENTED );
-        	    return( TYPE_INVALID );
-        	}
-        	break;
+            else if ( ( type1 == TYPE_CHAR ) || ( type2 == TYPE_CHAR ) )
+            {
+                return ( TYPE_CHAR );
+            }
+            else
+            {
+                typeError( eTYPE_CANT_BE_INCREMENTED_DECREMENTED );
+                return( TYPE_INVALID );
+            }
+            break;
 
         case PLUS:
         case MINUS:
         case TIMES:
         case DIVIDE:
-        	if ( ( ( type1 == TYPE_INT ) && ( type2 == TYPE_CHAR ) ) ||
-        	    ( ( type1 == TYPE_INT ) && ( type2 == TYPE_INT ) ) )
-        	{
-        		root->datatype = TYPE_INT;
-        	    return(TYPE_INT);
-        	}
+            if ( ( ( type1 == TYPE_INT ) && ( type2 == TYPE_CHAR ) ) ||
+                ( ( type1 == TYPE_INT ) && ( type2 == TYPE_INT ) ) )
+            {
+                root->datatype = TYPE_INT;
+                return(TYPE_INT);
+            }
 
-        	if ( ( ( type1 == TYPE_CHAR ) && ( type2 == TYPE_CHAR ) ) ||
-         	    ( ( type1 == TYPE_CHAR ) && ( type2 == TYPE_BOOL ) ) )
-        	{
-        		root->datatype = TYPE_CHAR;
-        	    return(TYPE_CHAR);
-        	}
-        	if( ( type1 == TYPE_FLOAT ) && ( type2 == TYPE_FLOAT ) )
-        	{
-        		root->datatype = TYPE_FLOAT;
-        		return( TYPE_FLOAT );
-        	}
-        	else
-        	{
-        	    typeError(eINCOMPATIBLE_OPERAND_TYPES_FOR_ARITHMETIC_OPERATOR);
-        	    return( TYPE_INVALID );
-        	}
-        	break;
+            if ( ( ( type1 == TYPE_CHAR ) && ( type2 == TYPE_CHAR ) ) ||
+                 ( ( type1 == TYPE_CHAR ) && ( type2 == TYPE_BOOL ) ) )
+            {
+                root->datatype = TYPE_CHAR;
+                return(TYPE_CHAR);
+            }
+            if( ( type1 == TYPE_FLOAT ) && ( type2 == TYPE_FLOAT ) )
+            {
+                root->datatype = TYPE_FLOAT;
+                return( TYPE_FLOAT );
+            }
+            else
+            {
+                typeError(eINCOMPATIBLE_OPERAND_TYPES_FOR_ARITHMETIC_OPERATOR);
+                return( TYPE_INVALID );
+            }
+            break;
 
         default:
-        	if ( ( type1 == TYPE_INVALID ) && ( type2 != TYPE_INVALID ) )
-        	{
-        	    return(type2);
-        	}
-        	else
-        	{
-        	    return(type1);
-        	}
-        	break;
+            if ( ( type1 == TYPE_INVALID ) && ( type2 != TYPE_INVALID ) )
+            {
+                return(type2);
+            }
+            else
+            {
+                return(type1);
+            }
+            break;
     }
 
     return TYPE_INVALID;
@@ -559,14 +559,14 @@ int TypeCheck(struct Node *root, int level, bool debug)
 /*============================================================================*/
 /*  typeError                                                                 */
 /*!
-	Throw a type error
+    Throw a type error
 
-	The typeError function outputs an error message associated with the
+    The typeError function outputs an error message associated with the
     specified type error, and sets the global error flag
 
     @param[in]
         errnum
-			type error number
+            type error number
 
 ==============================================================================*/
 static void typeError(teTYPE_ERR errnum )

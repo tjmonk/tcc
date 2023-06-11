@@ -89,8 +89,8 @@ struct Node *createNode( int type, struct Node *left, struct Node *right )
 /*!
     Update the children of the node
 
-	The updateNode function sets the left and right children of
-	the specified node.
+    The updateNode function sets the left and right children of
+    the specified node.
 
     @param[in]
         pNode
@@ -107,11 +107,11 @@ struct Node *createNode( int type, struct Node *left, struct Node *right )
 ==============================================================================*/
 void updateNode( struct Node *pNode, struct Node *left, struct Node *right )
 {
-	if( pNode != NULL )
-	{
-		pNode->left = left;
-		pNode->right = right;
-	}
+    if( pNode != NULL )
+    {
+        pNode->left = left;
+        pNode->right = right;
+    }
 }
 
 /*============================================================================*/
@@ -119,7 +119,7 @@ void updateNode( struct Node *pNode, struct Node *left, struct Node *right )
 /*!
     Display the parse tree
 
-	The parseTree function recursively displays the parse tree including
+    The parseTree function recursively displays the parse tree including
     identifier names
 
     @param[in]
@@ -152,457 +152,457 @@ void parseTree(struct Node *root, int lvl)
     switch(root->type)
     {
         case PROGRAM:
-        	printf("program");
-        	break;
+            printf("program");
+            break;
 
         case FUNC_DEF_LIST:
-        	printf("fd_List");
-        	break;
+            printf("fd_List");
+            break;
 
         case FUNC_DEF:
-        	printf("funcDef");
-        	break;
+            printf("funcDef");
+            break;
 
         case FUNC_DEF1:
-        	printf("funcDef1");
-        	break;
+            printf("funcDef1");
+            break;
 
         case ID:
-        	idEntry = root->ident;
-        	if( idEntry != NULL )
-        	{
-        		printf("ID %s",idEntry->name);
-        	}
-        	else
-        	{
-        		printf("ID <unknown>\n");
-        	}
-        	break;
+            idEntry = root->ident;
+            if( idEntry != NULL )
+            {
+                printf("ID %s",idEntry->name);
+            }
+            else
+            {
+                printf("ID <unknown>\n");
+            }
+            break;
 
         case LVAL_ID:
-        	idEntry = root->ident;
-        	if( idEntry != NULL )
-        	{
-        		printf("LVAL_ID %s",idEntry->name);
-        	}
-        	else
-        	{
-        		printf("LVAL_ID <unknown>\n");
-        	}
-        	break;
+            idEntry = root->ident;
+            if( idEntry != NULL )
+            {
+                printf("LVAL_ID %s",idEntry->name);
+            }
+            else
+            {
+                printf("LVAL_ID <unknown>\n");
+            }
+            break;
 
         case EXTERN_LVAL_ID:
-        	idEntry = root->ident;
-        	if( idEntry != NULL )
-        	{
-        		printf("EXTERN ID %s",idEntry->name);
-        	}
-        	else
-        	{
-        		printf("EXTERN ID <unknown>\n");
-        	}
-        	break;
+            idEntry = root->ident;
+            if( idEntry != NULL )
+            {
+                printf("EXTERN ID %s",idEntry->name);
+            }
+            else
+            {
+                printf("EXTERN ID <unknown>\n");
+            }
+            break;
 
         case FUNC_ID:
-        	idEntry = root->ident;
-        	if( idEntry != NULL )
-        	{
-	        	printf("FUNC_ID %s",idEntry->name);
-        	}
-        	else
-        	{
-	        	printf("FUNC_ID unknown");
-        	}
+            idEntry = root->ident;
+            if( idEntry != NULL )
+            {
+                printf("FUNC_ID %s",idEntry->name);
+            }
+            else
+            {
+                printf("FUNC_ID unknown");
+            }
 
-        	break;
+            break;
 
         case INVOKATION_ID:
-        	idEntry = root->ident;
-        	printf("INVOKATION_ID %s",idEntry->name);
-        	break;
+            idEntry = root->ident;
+            printf("INVOKATION_ID %s",idEntry->name);
+            break;
 
         case PARAM_ID:
-        	idEntry = root->ident;
-        	printf("PARAM_ID %s",idEntry->name);
-        	break;
+            idEntry = root->ident;
+            printf("PARAM_ID %s",idEntry->name);
+            break;
 
         case DECL_ID:
-        	idEntry = root->ident;
-        	printf("DECL_ID %s",idEntry->name);
-        	break;
+            idEntry = root->ident;
+            printf("DECL_ID %s",idEntry->name);
+            break;
 
         case NUM:
-        	printf("%d",root->value);
-        	break;
+            printf("%d",root->value);
+            break;
 
         case CHARSTR:
-        	idEntry = root->ident;
-        	printf("%s",idEntry->name);
-        	break;
+            idEntry = root->ident;
+            printf("%s",idEntry->name);
+            break;
 
         case FUNC_HDR:
-        	printf("funcHdr");
-        	break;
+            printf("funcHdr");
+            break;
 
         case FUNC_HDR1:
-        	printf("funcHdr1");
-        	break;
+            printf("funcHdr1");
+            break;
 
         case STAT_LIST:
-        	printf("statList");
-        	break;
+            printf("statList");
+            break;
 
         case COMP_STAT:
-        	printf("compStat");
-        	break;
+            printf("compStat");
+            break;
 
         case IF:
-        	printf("if");
-        	break;
+            printf("if");
+            break;
 
         case ELSE:
-        	printf("else");
-        	break;
+            printf("else");
+            break;
 
-    	case WHILE:
-    		printf("while");
-    		break;
+        case WHILE:
+            printf("while");
+            break;
 
-    	case CASE:
-    		printf("case");
-    		break;
+        case CASE:
+            printf("case");
+            break;
 
-    	case CASE1:
-    		printf("case1");
-    		break;
+        case CASE1:
+            printf("case1");
+            break;
 
-    	case DEFAULT:
-    		printf("default");
-    		break;
+        case DEFAULT:
+            printf("default");
+            break;
 
         case FOR:
-        	printf("for");
-        	break;
+            printf("for");
+            break;
 
         case FOR1:
-        	printf("for1");
-        	break;
+            printf("for1");
+            break;
 
         case FOR2:
-        	printf("for2");
-        	break;
+            printf("for2");
+            break;
 
         case RETURN:
-        	printf("return");
-        	break;
+            printf("return");
+            break;
 
         case BREAK:
-        	printf("break");
-        	break;
+            printf("break");
+            break;
 
         case WRITE:
-        	printf("write");
-        	break;
+            printf("write");
+            break;
 
-		case FILE_WRITE:
-			printf("file_write");
-			break;
+        case FILE_WRITE:
+            printf("file_write");
+            break;
 
         case WRITELN:
-        	printf("writeln");
-        	break;
+            printf("writeln");
+            break;
 
         case READ:
-        	printf("read");
-        	break;
+            printf("read");
+            break;
 
-		case FILE_READ:
-			printf("file_read");
-			break;
+        case FILE_READ:
+            printf("file_read");
+            break;
 
         case READLN:
-        	printf("readln");
-        	break;
+            printf("readln");
+            break;
 
-		case SYSTEM:
-			printf("system");
-			break;
+        case SYSTEM:
+            printf("system");
+            break;
 
-		case FILE_OPEN:
-			printf("file_open");
-			break;
+        case FILE_OPEN:
+            printf("file_open");
+            break;
 
-		case FILE_CLOSE:
-			printf("file_close");
-			break;
+        case FILE_CLOSE:
+            printf("file_close");
+            break;
 
-		case OPEN_PRINT_SESSION:
-			printf("open_print_session");
-			break;
+        case OPEN_PRINT_SESSION:
+            printf("open_print_session");
+            break;
 
-		case CLOSE_PRINT_SESSION:
-			printf("close_print_session");
-			break;
+        case CLOSE_PRINT_SESSION:
+            printf("close_print_session");
+            break;
 
         case ASSIGN:
-        	printf("=");
-        	break;
+            printf("=");
+            break;
 
         case TIMES_EQUALS:
-        	printf("*=");
-        	break;
+            printf("*=");
+            break;
 
         case DIV_EQUALS:
-        	printf("/=");
-        	break;
+            printf("/=");
+            break;
 
         case PLUS_EQUALS:
-        	printf("+=");
-        	break;
+            printf("+=");
+            break;
 
         case MINUS_EQUALS:
-        	printf("-=");
-        	break;
+            printf("-=");
+            break;
 
         case AND_EQUALS:
-        	printf("&=");
-        	break;
+            printf("&=");
+            break;
 
         case OR_EQUALS:
-        	printf("|=");
-        	break;
+            printf("|=");
+            break;
 
         case XOR_EQUALS:
-        	printf("^=");
-        	break;
+            printf("^=");
+            break;
 
         case ARRAY:
-        	printf("array");
-        	break;
+            printf("array");
+            break;
 
         case ARRAY_DECL:
-        	printf("arrayDecl");
-        	break;
+            printf("arrayDecl");
+            break;
 
-    	case EXTERN_DECL_LIST:
-    		printf("externDeclList");
-    		break;
+        case EXTERN_DECL_LIST:
+            printf("externDeclList");
+            break;
 
         case DECL_LIST:
-        	printf("declList");
-        	break;
+            printf("declList");
+            break;
 
-    	case EXTERN_DECLN:
-    		printf("externDecln");
-    		break;
+        case EXTERN_DECLN:
+            printf("externDecln");
+            break;
 
         case DECLN:
-        	printf("decln");
-        	break;
+            printf("decln");
+            break;
 
         case DECLN_LIST:
-        	printf("declnList");
-        	break;
+            printf("declnList");
+            break;
 
         case PROC_CALL:
-        	printf("proc");
-        	break;
+            printf("proc");
+            break;
 
         case ARG_LIST:
-        	printf("argList");
-        	break;
+            printf("argList");
+            break;
 
         case PARAM_LIST:
-        	printf("paramlist");
-        	break;
+            printf("paramlist");
+            break;
 
         case PARAMETER:
-        	printf("parameter");
-        	break;
+            printf("parameter");
+            break;
 
         case INPUT_LIST:
-        	printf("inputlist");
-        	break;
+            printf("inputlist");
+            break;
 
         case OUTPUT_LIST:
-        	printf("outputlist");
-        	break;
+            printf("outputlist");
+            break;
 
-    	case APPEND_LIST:
-    		printf("appendlist");
-    		break;
+        case APPEND_LIST:
+            printf("appendlist");
+            break;
 
         case TYPE_INT:
-        	printf("type_int");
-        	break;
+            printf("type_int");
+            break;
 
         case TYPE_FLOAT:
-        	printf("type_float");
-        	break;
+            printf("type_float");
+            break;
 
         case TYPE_BOOL:
-        	printf("type_bool");
-        	break;
+            printf("type_bool");
+            break;
 
         case TYPE_CHAR:
-        	printf("type_char");
-        	break;
+            printf("type_char");
+            break;
 
         case TYPE_STRING:
-        	printf("type_string");
-        	break;
+            printf("type_string");
+            break;
 
         case OR:
-        	printf("||");
-        	break;
+            printf("||");
+            break;
 
         case AND:
-        	printf("&&");
-        	break;
+            printf("&&");
+            break;
 
         case XOR:
-        	printf("^");
-        	break;
+            printf("^");
+            break;
 
         case BOR:
-        	printf("|");
-        	break;
+            printf("|");
+            break;
 
         case BAND:
-        	printf("&");
-        	break;
+            printf("&");
+            break;
 
-		case NOT:
-			printf("!");
-			break;
+        case NOT:
+            printf("!");
+            break;
 
         case EQUALS:
-        	printf("==");
-        	break;
+            printf("==");
+            break;
 
         case NOTEQUALS:
-        	printf("!=");
-        	break;
+            printf("!=");
+            break;
 
         case LTE:
-        	printf("<=");
-        	break;
+            printf("<=");
+            break;
 
         case GTE:
-        	printf(">=");
-        	break;
+            printf(">=");
+            break;
 
         case LT:
-        	printf("<");
-        	break;
+            printf("<");
+            break;
 
         case GT:
-        	printf(">");
-        	break;
+            printf(">");
+            break;
 
         case RSHIFT:
-        	printf(">>");
-        	break;
+            printf(">>");
+            break;
 
         case LSHIFT:
-        	printf("<<");
-        	break;
+            printf("<<");
+            break;
 
         case INC:
-        	printf("++");
-        	break;
+            printf("++");
+            break;
 
         case DEC:
-        	printf("--");
-        	break;
+            printf("--");
+            break;
 
         case PLUS:
-        	printf("+");
-        	break;
+            printf("+");
+            break;
 
         case MINUS:
-        	printf("-");
-        	break;
+            printf("-");
+            break;
 
         case TIMES:
-        	printf("*");
-        	break;
+            printf("*");
+            break;
 
         case DIVIDE:
-        	printf("/");
-        	break;
+            printf("/");
+            break;
 
-    	case APPEND:
-    		printf("APPEND");
-    		break;
+        case APPEND:
+            printf("APPEND");
+            break;
 
-		case LENGTH:
-			printf("LENGTH");
-			break;
+        case LENGTH:
+            printf("LENGTH");
+            break;
 
-		case SETAT:
-			printf("SETAT");
-			break;
+        case SETAT:
+            printf("SETAT");
+            break;
 
-		case SETAT1:
-			printf("SETAT1");
-			break;
+        case SETAT1:
+            printf("SETAT1");
+            break;
 
-		case CHARAT:
-			printf("CHARAT");
-			break;
+        case CHARAT:
+            printf("CHARAT");
+            break;
 
-    	case DELAY:
-    		printf("DELAY");
-    		break;
+        case DELAY:
+            printf("DELAY");
+            break;
 
-		case WAITSIG:
-			printf("WAITSIG");
-			break;
+        case WAITSIG:
+            printf("WAITSIG");
+            break;
 
-		case NOTIFY:
-			printf("NOTIFY");
-			break;
+        case NOTIFY:
+            printf("NOTIFY");
+            break;
 
-		case VALIDATE_START:
-			printf("VALIDATE_START");
-			break;
+        case VALIDATE_START:
+            printf("VALIDATE_START");
+            break;
 
-		case VALIDATE_END:
-			printf("VALIDATE_END");
-			break;
+        case VALIDATE_END:
+            printf("VALIDATE_END");
+            break;
 
-		case SETTIMER:
-			printf("SETTIMER");
-			break;
+        case SETTIMER:
+            printf("SETTIMER");
+            break;
 
-		case CLEARTIMER:
-			printf("CLEARTIMER");
-			break;
+        case CLEARTIMER:
+            printf("CLEARTIMER");
+            break;
 
-		case HANDLE:
-			printf("HANDLE");
-			break;
+        case HANDLE:
+            printf("HANDLE");
+            break;
 
-    	case SWITCH:
-    		printf("SWITCH");
-    		break;
+        case SWITCH:
+            printf("SWITCH");
+            break;
 
-    	case TO_FLOAT:
-    		printf("TO_FLOAT");
-    		break;
+        case TO_FLOAT:
+            printf("TO_FLOAT");
+            break;
 
-    	case TO_INT:
-    		printf("TO_INT");
-    		break;
+        case TO_INT:
+            printf("TO_INT");
+            break;
 
-    	case FLOAT:
-    		printf("%e", root->fvalue);
-    		break;
+        case FLOAT:
+            printf("%e", root->fvalue);
+            break;
 
         default:
-        	printf("NARG: %d", root->type);
-        	break;
+            printf("NARG: %d", root->type);
+            break;
     }
 
     parseTree(root->left,lvl+1);

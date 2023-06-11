@@ -55,16 +55,16 @@ SOFTWARE.
 typedef enum eBREAK_TYPE
 {
     /*! unknown (invalid) break statement */
-	eBreakTypeUnknown = 0,
+    eBreakTypeUnknown = 0,
 
     /*! break statement associated with a while loop */
-	eBreakTypeWhile,
+    eBreakTypeWhile,
 
     /*! break statement associated with a for loop */
-	eBreakTypeFor,
+    eBreakTypeFor,
 
     /*! break statement associated with a switch statement */
-	eBreakTypeSwitch
+    eBreakTypeSwitch
 } teBREAK_TYPE;
 
 /*! Code Generator State object */
@@ -351,7 +351,7 @@ CodeGen *codegen_init( FILE *fp )
 ==============================================================================*/
 int GenerateCode( CodeGen *pCodeGen, struct Node *root)
 {
-	int result = -1;
+    int result = -1;
 
     if (root == NULL)
     {
@@ -361,167 +361,167 @@ int GenerateCode( CodeGen *pCodeGen, struct Node *root)
     switch(root->type)
     {
         case PROGRAM:
-			result = generateProgram( pCodeGen, root );
-        	break;
+            result = generateProgram( pCodeGen, root );
+            break;
 
         case FUNC_DEF_LIST:
-			result = generateFuncDefList( pCodeGen, root );
-        	break;
+            result = generateFuncDefList( pCodeGen, root );
+            break;
 
         case FUNC_DEF:
-        	result = generateFuncDef( pCodeGen, root );
-        	break;
+            result = generateFuncDef( pCodeGen, root );
+            break;
 
         case FUNC_DEF1:
-        	result = generateFuncDef1( pCodeGen, root );
-        	break;
+            result = generateFuncDef1( pCodeGen, root );
+            break;
 
         case ID:
-			result = generateID( pCodeGen, root );
-        	break;
+            result = generateID( pCodeGen, root );
+            break;
 
         case LVAL_ID:
-			result = generateLValueID( pCodeGen, root );
-        	break;
+            result = generateLValueID( pCodeGen, root );
+            break;
 
         case EXTERN_LVAL_ID:
-			result = generateExternLValueID( pCodeGen, root );
-        	break;
+            result = generateExternLValueID( pCodeGen, root );
+            break;
 
         case DECL_ID:
-			result = generateDeclarationID( pCodeGen, root );
-        	break;
+            result = generateDeclarationID( pCodeGen, root );
+            break;
 
         case FUNC_ID:
-        	result = generateFuncID( pCodeGen, root );
-        	break;
+            result = generateFuncID( pCodeGen, root );
+            break;
 
         case INVOKATION_ID:
-        	result = generateInvocationID( pCodeGen, root );
-        	break;
+            result = generateInvocationID( pCodeGen, root );
+            break;
 
         case PARAM_ID:
-        	break;
+            break;
 
         case NUM:
-        	result = generateNum( pCodeGen, root );
-        	break;
+            result = generateNum( pCodeGen, root );
+            break;
 
         case FLOAT:
-			result = generateFloat( pCodeGen, root );
-        	break;
+            result = generateFloat( pCodeGen, root );
+            break;
 
         case CHARSTR:
-        	result = generateCharStr( pCodeGen, root );
-        	break;
+            result = generateCharStr( pCodeGen, root );
+            break;
 
         case CHARACTER:
-			result = generateChar( pCodeGen, root );
-        	break;
+            result = generateChar( pCodeGen, root );
+            break;
 
         case FUNC_HDR:
-        	result = generateFuncHdr( pCodeGen, root );
-        	break;
+            result = generateFuncHdr( pCodeGen, root );
+            break;
 
         case FUNC_HDR1:
-			result = generateFuncHdr1( pCodeGen, root );
-        	break;
+            result = generateFuncHdr1( pCodeGen, root );
+            break;
 
         case STAT_LIST:
-			result = generateStatementList( pCodeGen, root );
-        	break;
+            result = generateStatementList( pCodeGen, root );
+            break;
 
         case COMP_STAT:
-			result = generateCompoundStatement( pCodeGen, root );
-        	break;
+            result = generateCompoundStatement( pCodeGen, root );
+            break;
 
         case IF:
-        	result = generateIf( pCodeGen, root );
-        	break;
+            result = generateIf( pCodeGen, root );
+            break;
 
         case ELSE:
-        	result = generateElse( pCodeGen, root );
-        	break;
+            result = generateElse( pCodeGen, root );
+            break;
 
         case FOR:
-        	result = generateFor( pCodeGen, root );
-        	break;
+            result = generateFor( pCodeGen, root );
+            break;
 
         case FOR1:
-        	result = generateFor1( pCodeGen, root );
-        	break;
+            result = generateFor1( pCodeGen, root );
+            break;
 
         case FOR2:
-        	result = generateFor2( pCodeGen, root );
-        	break;
+            result = generateFor2( pCodeGen, root );
+            break;
 
-    	case WHILE:
-    		result = generateWhile( pCodeGen, root );
-			break;
+        case WHILE:
+            result = generateWhile( pCodeGen, root );
+            break;
 
-    	case BREAK:
-			result = generateBreak( pCodeGen, root );
-    		break;
+        case BREAK:
+            result = generateBreak( pCodeGen, root );
+            break;
 
         case RETURN:
-        	result = generateReturn( pCodeGen, root );
-        	break;
+            result = generateReturn( pCodeGen, root );
+            break;
 
-    	case SWITCH:
-        	result = generateSwitch( pCodeGen, root );
-    		break;
+        case SWITCH:
+            result = generateSwitch( pCodeGen, root );
+            break;
 
-    	case CASE:
-			result = generateCase( pCodeGen, root );
-    		break;
+        case CASE:
+            result = generateCase( pCodeGen, root );
+            break;
 
-    	case CASE1:
-			result = generateCase1( pCodeGen, root );
-    		break;
+        case CASE1:
+            result = generateCase1( pCodeGen, root );
+            break;
 
-    	case DEFAULT:
-			result = generateDefault( pCodeGen, root );
-    		break;
+        case DEFAULT:
+            result = generateDefault( pCodeGen, root );
+            break;
 
         case WRITE:
-        	result = generateWrite( pCodeGen, root );
-        	break;
+            result = generateWrite( pCodeGen, root );
+            break;
 
         case OUTPUT_LIST:
-			result = generateOutputList( pCodeGen, root );
-        	break;
+            result = generateOutputList( pCodeGen, root );
+            break;
 
         case APPEND_LIST:
-			result = generateAppendList( pCodeGen, root );
-        	break;
+            result = generateAppendList( pCodeGen, root );
+            break;
 
         case WRITELN:
-        	result = generateWriteLn( pCodeGen, root );
-        	break;
+            result = generateWriteLn( pCodeGen, root );
+            break;
 
         case READ:
-			result = generateRead( pCodeGen, root );
-        	break;
+            result = generateRead( pCodeGen, root );
+            break;
 
         case INPUT_LIST:
-			result = generateInputList( pCodeGen, root );
-        	break;
+            result = generateInputList( pCodeGen, root );
+            break;
 
-    	case TO_FLOAT:
-			result = generateToFloat( pCodeGen, root );
-    		break;
+        case TO_FLOAT:
+            result = generateToFloat( pCodeGen, root );
+            break;
 
-    	case TO_INT:
-			result = generateToInt( pCodeGen, root );
-    		break;
+        case TO_INT:
+            result = generateToInt( pCodeGen, root );
+            break;
 
         case ASSIGN:
-			result = generateAssign( pCodeGen, root );
-        	break;
+            result = generateAssign( pCodeGen, root );
+            break;
 
-    	case APPEND:
-			result = generateAppend( pCodeGen, root );
-    		break;
+        case APPEND:
+            result = generateAppend( pCodeGen, root );
+            break;
 
         case LENGTH:
             result = generateLength( pCodeGen, root );
@@ -539,9 +539,9 @@ int GenerateCode( CodeGen *pCodeGen, struct Node *root)
             result = generateSetAt1( pCodeGen, root );
             break;
 
-    	case DELAY:
-			result = generateDelay( pCodeGen, root );
-    		break;
+        case DELAY:
+            result = generateDelay( pCodeGen, root );
+            break;
 
         case WAITSIG:
             result = generateWaitSig( pCodeGen, root );
@@ -600,105 +600,105 @@ int GenerateCode( CodeGen *pCodeGen, struct Node *root)
             break;
 
         case TIMES_EQUALS:
-			result = generateTimesEquals( pCodeGen, root );
-        	break;
+            result = generateTimesEquals( pCodeGen, root );
+            break;
 
         case DIV_EQUALS:
-			result = generateDivEquals( pCodeGen, root );
-        	break;
+            result = generateDivEquals( pCodeGen, root );
+            break;
 
         case PLUS_EQUALS:
-			result = generatePlusEquals( pCodeGen, root );
-        	break;
+            result = generatePlusEquals( pCodeGen, root );
+            break;
 
         case MINUS_EQUALS:
-			result = generateMinusEquals( pCodeGen, root );
-        	break;
+            result = generateMinusEquals( pCodeGen, root );
+            break;
 
         case AND_EQUALS:
-			result = generateAndEquals( pCodeGen, root );
-        	break;
+            result = generateAndEquals( pCodeGen, root );
+            break;
 
         case OR_EQUALS:
-			result = generateOrEquals( pCodeGen, root );
-        	break;
+            result = generateOrEquals( pCodeGen, root );
+            break;
 
         case XOR_EQUALS:
-			result = generateXorEquals( pCodeGen, root );
-        	break;
+            result = generateXorEquals( pCodeGen, root );
+            break;
 
         case ARRAY:
-			result = generateArray( pCodeGen, root );
-        	break;
+            result = generateArray( pCodeGen, root );
+            break;
 
         case ARRAY_DECL:
-			result = generateArrayDeclaration( pCodeGen, root );
-        	break;
+            result = generateArrayDeclaration( pCodeGen, root );
+            break;
 
         case DECL_LIST:
-			result = generateDeclarationList( pCodeGen, root );
-        	break;
+            result = generateDeclarationList( pCodeGen, root );
+            break;
 
-    	case EXTERN_DECL_LIST:
-			result = generateExternDeclarationList( pCodeGen, root );
-			break;
+        case EXTERN_DECL_LIST:
+            result = generateExternDeclarationList( pCodeGen, root );
+            break;
 
         case EXTERN_DECLN:
-			result = generateExternDeclaration( pCodeGen, root );
-        	break;
+            result = generateExternDeclaration( pCodeGen, root );
+            break;
 
         case DECLN:
-			result = generateDeclaration( pCodeGen, root );
-        	break;
+            result = generateDeclaration( pCodeGen, root );
+            break;
 
         case DECLN_LIST:
-			result = generateExternDeclarationList( pCodeGen, root );
-        	break;
+            result = generateExternDeclarationList( pCodeGen, root );
+            break;
 
         case PROC_CALL:
-        	result = generateProcCall( pCodeGen, root );
-        	break;
+            result = generateProcCall( pCodeGen, root );
+            break;
 
         case ARG_LIST:
-			result = generateArgList( pCodeGen, root );
-        	break;
+            result = generateArgList( pCodeGen, root );
+            break;
 
         case PARAM_LIST:
-			result = generateParameterList( pCodeGen, root );
-        	break;
+            result = generateParameterList( pCodeGen, root );
+            break;
 
         case PARAMETER:
-			result = generateParameter( pCodeGen, root );
-        	break;
+            result = generateParameter( pCodeGen, root );
+            break;
 
-		case READLN:
-    	case TYPE_FLOAT:
+        case READLN:
+        case TYPE_FLOAT:
         case TYPE_INT:
         case TYPE_BOOL:
         case TYPE_CHAR:
         case TYPE_STRING:
-    		result = -1;
-    		break;
+            result = -1;
+            break;
 
         case OR:
-			result = generateOr( pCodeGen, root );
-        	break;
+            result = generateOr( pCodeGen, root );
+            break;
 
         case AND:
-			result = generateAnd( pCodeGen, root );
-        	break;
+            result = generateAnd( pCodeGen, root );
+            break;
 
         case XOR:
-        	result = generateXor( pCodeGen, root );
-        	break;
+            result = generateXor( pCodeGen, root );
+            break;
 
         case BOR:
-        	result = generateBor( pCodeGen, root );
-        	break;
+            result = generateBor( pCodeGen, root );
+            break;
 
         case BAND:
-        	result = generateBand( pCodeGen, root );
-        	break;
+            result = generateBand( pCodeGen, root );
+            break;
 
         case BNOT:
             result = generateBnot( pCodeGen, root );
@@ -709,66 +709,66 @@ int GenerateCode( CodeGen *pCodeGen, struct Node *root)
             break;
 
         case EQUALS:
-        	result = generateEquals( pCodeGen,root );
-        	break;
+            result = generateEquals( pCodeGen,root );
+            break;
 
         case NOTEQUALS:
-			result = generateNotEquals( pCodeGen, root );
-        	break;
+            result = generateNotEquals( pCodeGen, root );
+            break;
 
         case LTE:
-        	result = generateLessThanOrEqual( pCodeGen, root );
-        	break;
+            result = generateLessThanOrEqual( pCodeGen, root );
+            break;
 
         case GTE:
-			result = generateGreaterThanOrEqual( pCodeGen, root );
-        	break;
+            result = generateGreaterThanOrEqual( pCodeGen, root );
+            break;
 
         case LT:
-			result = generateLessThan( pCodeGen, root );
-        	break;
+            result = generateLessThan( pCodeGen, root );
+            break;
 
         case GT:
-			result = generateGreaterThan( pCodeGen, root );
-        	break;
+            result = generateGreaterThan( pCodeGen, root );
+            break;
 
         case RSHIFT:
-			result = generateRShift( pCodeGen, root );
-        	break;
+            result = generateRShift( pCodeGen, root );
+            break;
 
         case LSHIFT:
-			result = generateLShift( pCodeGen, root );
-        	break;
+            result = generateLShift( pCodeGen, root );
+            break;
 
         case INC:
-			result = generateIncrement( pCodeGen, root );
+            result = generateIncrement( pCodeGen, root );
             break;
 
         case DEC:
-			result = generateDecrement( pCodeGen, root );
+            result = generateDecrement( pCodeGen, root );
             break;
 
         case PLUS:
-			result = generatePlus( pCodeGen, root );
-        	break;
+            result = generatePlus( pCodeGen, root );
+            break;
 
         case MINUS:
-			result = generateMinus( pCodeGen, root );
-        	break;
+            result = generateMinus( pCodeGen, root );
+            break;
 
         case TIMES:
-			result = generateTimes( pCodeGen, root );
-        	break;
+            result = generateTimes( pCodeGen, root );
+            break;
 
         case DIVIDE:
-			result = generateDivide( pCodeGen, root );
-        	break;
+            result = generateDivide( pCodeGen, root );
+            break;
 
         default:
-        	fprintf( stderr,
+            fprintf( stderr,
                      "GenerateCode - error, unknown node type: %d\n",
                      root->type);
-        	break;
+            break;
     }
 
     return result;
@@ -1031,40 +1031,40 @@ static int generateFuncDef1( CodeGen *pCodeGen, struct Node *root )
 ==============================================================================*/
 static int generateDeclarationID( CodeGen *pCodeGen, struct Node *root )
 {
-	int n;
+    int n;
     int h;
-    struct identEntry *idEntry;	/* access to identifiers */
+    struct identEntry *idEntry;    /* access to identifiers */
     char label[7];
-    char label1[7];			/* label generation */
+    char label1[7];            /* label generation */
     FILE *fp;
     int result = -1;
 
     if( ( pCodeGen != NULL ) &&
         ( pCodeGen->fp != NULL ) &&
-	    ( root != NULL ) )
-	{
+        ( root != NULL ) )
+    {
         fp = pCodeGen->fp;
 
-		idEntry = root->ident;
-		if( idEntry != NULL )
-		{
-			/* allocate a new working register */
-			n = AllocReg( idEntry, 0 );
-			if( idEntry->isExternal == true )
-			{
-				/* generate a label */
-				sprintf( (char *)label, "_SV%d", GetLabelNumber() );
-				fprintf( fp, "\tJMP %s\n", label );
-				sprintf( (char *)label1, "_sv%d", GetLabelNumber() );
+        idEntry = root->ident;
+        if( idEntry != NULL )
+        {
+            /* allocate a new working register */
+            n = AllocReg( idEntry, 0 );
+            if( idEntry->isExternal == true )
+            {
+                /* generate a label */
+                sprintf( (char *)label, "_SV%d", GetLabelNumber() );
+                fprintf( fp, "\tJMP %s\n", label );
+                sprintf( (char *)label1, "_sv%d", GetLabelNumber() );
 
-				/* generate the variable name */
-				fprintf( fp, "%s\n\tDAT \"%s\"\n", label1,idEntry->name );
-				fprintf( fp, "%s\n\tMOV R%d,%s\n", label, n, label1 );
-				fprintf( fp, "\tEXT R%d\n", n );
-				fprintf( fp, "\tSUB SP,%d\n", idEntry->size );
-				fprintf( fp, "\tMOV R2,SP\n" );
-				fprintf( fp, "\tSTR R2,R%d", n );
-				fprintf( fp, "\t;extern handle: %s\n", idEntry->name );
+                /* generate the variable name */
+                fprintf( fp, "%s\n\tDAT \"%s\"\n", label1,idEntry->name );
+                fprintf( fp, "%s\n\tMOV R%d,%s\n", label, n, label1 );
+                fprintf( fp, "\tEXT R%d\n", n );
+                fprintf( fp, "\tSUB SP,%d\n", idEntry->size );
+                fprintf( fp, "\tMOV R2,SP\n" );
+                fprintf( fp, "\tSTR R2,R%d", n );
+                fprintf( fp, "\t;extern handle: %s\n", idEntry->name );
 
                 /* store the string buffer ID on the stack */
                 h = n;
@@ -1082,7 +1082,7 @@ static int generateDeclarationID( CodeGen *pCodeGen, struct Node *root )
 
                     case TYPE_STRING:
                         /* get the string buffer ID */
-					    fprintf( fp,
+                        fprintf( fp,
                                 "\tMOV R%d, %d\n",
                                 n,
                                 idEntry->stringBufID );
@@ -1101,26 +1101,26 @@ static int generateDeclarationID( CodeGen *pCodeGen, struct Node *root )
 
                 /* and put the result on the stack */
                 fprintf( fp, "\tSTR R2,R%d", n );
-				fprintf( fp, "\t;extern value: %s\n", idEntry->name );
+                fprintf( fp, "\t;extern value: %s\n", idEntry->name );
                 result = n;
-			}
-			else
-			{
-				fprintf( fp, "\tSUB SP,%d\n", idEntry->size );
-				fprintf( fp, "\tMOV R2,SP" );
-				fprintf( fp, "\t;decl: %s\n", idEntry->name );
-				if( idEntry->type == TYPE_STRING )
-				{
+            }
+            else
+            {
+                fprintf( fp, "\tSUB SP,%d\n", idEntry->size );
+                fprintf( fp, "\tMOV R2,SP" );
+                fprintf( fp, "\t;decl: %s\n", idEntry->name );
+                if( idEntry->type == TYPE_STRING )
+                {
                     /* store the string buffer ID on the stack */
-					fprintf( fp, "\tMOV R%d, %d\n", n, idEntry->stringBufID );
-					fprintf( fp, "\tSTR R2, R%d\n", n );
+                    fprintf( fp, "\tMOV R%d, %d\n", n, idEntry->stringBufID );
+                    fprintf( fp, "\tSTR R2, R%d\n", n );
                     /* and create the string buffer */
-					fprintf( fp, "\tCSB R%d", n );
-					fprintf( fp, "\t\t;create new string buffer\n" );
-				}
-			}
-		}
-	}
+                    fprintf( fp, "\tCSB R%d", n );
+                    fprintf( fp, "\t\t;create new string buffer\n" );
+                }
+            }
+        }
+    }
 
     return result;
 }
@@ -1165,7 +1165,7 @@ static int generateLValueID( CodeGen *pCodeGen, struct Node *root )
             fprintf( fp, "\tADD R2,%d", idEntry->offset );
             fprintf( fp, "\t;l-value: %s\n", idEntry->name );
             fprintf( fp, "\tLOD R%d,R2\n", n );
-        	result = n;
+            result = n;
         }
     }
 
@@ -1213,7 +1213,7 @@ static int generateExternLValueID( CodeGen *pCodeGen, struct Node *root )
             fprintf( fp, "\tLOD R%d,R2", n );
             fprintf( fp, "\t;external l-value: %s\n", idEntry->name );
 
-        	result = n;
+            result = n;
         }
     }
 
@@ -1255,12 +1255,12 @@ static int generateInvocationID( CodeGen *pCodeGen, struct Node *root )
         if( idEntry != NULL )
         {
             fprintf( fp, "\tPSH R0" );
-        	fprintf( fp, "\t\t;procedure invokation\n" );
+            fprintf( fp, "\t\t;procedure invokation\n" );
             fprintf( fp, "\tPSH R1\n" );
-        	fprintf( fp, "\tCAL _%s\n", idEntry->name );
-        	fprintf( fp, "\tPOP R1\n" );
-        	fprintf( fp, "\tPOP R2\n" );
-        	fprintf( fp, "\tMOV SP,R2\n" );
+            fprintf( fp, "\tCAL _%s\n", idEntry->name );
+            fprintf( fp, "\tPOP R1\n" );
+            fprintf( fp, "\tPOP R2\n" );
+            fprintf( fp, "\tMOV SP,R2\n" );
         }
     }
 
@@ -1441,7 +1441,7 @@ static int generateFloat( CodeGen *pCodeGen, struct Node *root )
 static int generateCharStr( CodeGen *pCodeGen, struct Node *root )
 {
     char label[7];
-    char label1[7];			/* label generation */
+    char label1[7];            /* label generation */
     int result = -1;
     struct identEntry *idEntry;
     int n;
@@ -1456,13 +1456,13 @@ static int generateCharStr( CodeGen *pCodeGen, struct Node *root )
         idEntry = root->ident;
         if( idEntry != NULL )
         {
-        	n = AllocReg( NULL, 0 );
-        	sprintf( (char *)label, "_STR%d", GetLabelNumber() );
-        	fprintf( fp, "\tJMP %s\n", label );
-        	sprintf( (char *)label1, "_txt%d", GetLabelNumber() );
+            n = AllocReg( NULL, 0 );
+            sprintf( (char *)label, "_STR%d", GetLabelNumber() );
+            fprintf( fp, "\tJMP %s\n", label );
+            sprintf( (char *)label1, "_txt%d", GetLabelNumber() );
 
-        	fprintf( fp, "%s\n\tDAT %s\n", label1, idEntry->name );
-        	fprintf( fp, "%s\n\tMOV R%d,%s\n", label, n, label1 );
+            fprintf( fp, "%s\n\tDAT %s\n", label1, idEntry->name );
+            fprintf( fp, "%s\n\tMOV R%d,%s\n", label, n, label1 );
 
             result = n;
         }
@@ -1511,9 +1511,9 @@ static int generateChar( CodeGen *pCodeGen, struct Node *root )
         idEntry = root->ident;
         if( idEntry != NULL )
         {
-        	n = AllocReg( NULL, 0 );
-        	fprintf( fp, "\tMOV R%d,%s", n, idEntry->name );
-        	fprintf( fp, "\t;character literal\n" );
+            n = AllocReg( NULL, 0 );
+            fprintf( fp, "\tMOV R%d,%s", n, idEntry->name );
+            fprintf( fp, "\t;character literal\n" );
             result = n;
         }
         else
@@ -3067,9 +3067,9 @@ int generateAssign( CodeGen *pCodeGen, struct Node *root )
                   ( idEntry->isExternal == true ) )
         {
             n = AllocReg( NULL, 0 );
-        	fprintf( fp, "\tADD R2,-%d\n", idEntry->size );
-        	fprintf( fp, "\tLOD R%d,R2", n );
-        	fprintf( fp, "\t;string buffer for: %s\n", idEntry->name );
+            fprintf( fp, "\tADD R2,-%d\n", idEntry->size );
+            fprintf( fp, "\tLOD R%d,R2", n );
+            fprintf( fp, "\t;string buffer for: %s\n", idEntry->name );
 
             fprintf( fp, "\tZSB R%d", n);
             fprintf( fp, "\t\t;string buffer assignment\n" );
@@ -3157,61 +3157,61 @@ static void Append( int dst, int src, struct Node *root, CodeGen *pCodeGen )
 {
     FILE *fp;
 
-	if( ( pCodeGen != NULL ) &&
+    if( ( pCodeGen != NULL ) &&
         ( pCodeGen->fp != NULL ) &&
-		( root != NULL ) )
-	{
+        ( root != NULL ) )
+    {
         fp = pCodeGen->fp;
 
-		switch(root->type)
-		{
-			case CHARSTR:
-				fprintf( fp, "\tASS R%d,R%d", dst, src );
-				fprintf( fp, "\t;append string literal\n" );
-				break;
+        switch(root->type)
+        {
+            case CHARSTR:
+                fprintf( fp, "\tASS R%d,R%d", dst, src );
+                fprintf( fp, "\t;append string literal\n" );
+                break;
 
-			case CHARACTER:
-				fprintf( fp, "\tASC R%d,R%d", dst, src );
-				fprintf( fp, "\t;append integer literal\n" );
-				break;
+            case CHARACTER:
+                fprintf( fp, "\tASC R%d,R%d", dst, src );
+                fprintf( fp, "\t;append integer literal\n" );
+                break;
 
-			case NUM:
-				fprintf( fp, "\tASN R%d,R%d", dst, src );
-				fprintf( fp, "\t;append integer literal\n" );
-				break;
+            case NUM:
+                fprintf( fp, "\tASN R%d,R%d", dst, src );
+                fprintf( fp, "\t;append integer literal\n" );
+                break;
 
-			case FLOAT:
-				fprintf( fp, "\tASF R%d,R%d", dst, src );
-				fprintf( fp, "\t;append float literal\n" );
-				break;
+            case FLOAT:
+                fprintf( fp, "\tASF R%d,R%d", dst, src );
+                fprintf( fp, "\t;append float literal\n" );
+                break;
 
-			case ID:
-				switch(root->ident->type)
-				{
-					case TYPE_CHAR:
-						fprintf( fp, "\tASC R%d,R%d", dst, src );
-						fprintf( fp, "\t;append integer\n" );
-						break;
+            case ID:
+                switch(root->ident->type)
+                {
+                    case TYPE_CHAR:
+                        fprintf( fp, "\tASC R%d,R%d", dst, src );
+                        fprintf( fp, "\t;append integer\n" );
+                        break;
 
-					case TYPE_INT:
-						fprintf( fp, "\tASN R%d,R%d", dst, src );
-						fprintf( fp, "\t;append integer\n" );
-						break;
+                    case TYPE_INT:
+                        fprintf( fp, "\tASN R%d,R%d", dst, src );
+                        fprintf( fp, "\t;append integer\n" );
+                        break;
 
-					case TYPE_FLOAT:
-						fprintf( fp, "\tASF R%d,R%d", dst, src );
-						fprintf( fp, "\t;append float\n" );
-						break;
+                    case TYPE_FLOAT:
+                        fprintf( fp, "\tASF R%d,R%d", dst, src );
+                        fprintf( fp, "\t;append float\n" );
+                        break;
 
-					case TYPE_STRING:
-						fprintf( fp, "\tASB R%d,R%d", dst, src );
-						fprintf( fp, "\t;append string buffer\n" );
-						break;
-				}
+                    case TYPE_STRING:
+                        fprintf( fp, "\tASB R%d,R%d", dst, src );
+                        fprintf( fp, "\t;append string buffer\n" );
+                        break;
+                }
 
-			default:
-				break;
-		}
+            default:
+                break;
+        }
 
         FreeTempReg( src );
     }
@@ -3329,8 +3329,8 @@ static int generateInputList( CodeGen *pCodeGen, struct Node *root )
                 {
                     case TYPE_INT:
                         fprintf( fp, "\tRDN R%d", a );
-					    fprintf( fp, "\t\t;read integer\n" );
-					    fprintf( fp, "\tSTR R2,R%d\n", a );
+                        fprintf( fp, "\t\t;read integer\n" );
+                        fprintf( fp, "\tSTR R2,R%d\n", a );
 
                 }
             }
@@ -3374,7 +3374,7 @@ static int generateToFloat( CodeGen *pCodeGen, struct Node *root )
         fp = pCodeGen->fp;
 
         a = GenerateCode( pCodeGen, root->left );
-    	fprintf( fp, "\tTOF R%d\n", a );
+        fprintf( fp, "\tTOF R%d\n", a );
         result = a;
     }
 
@@ -5121,7 +5121,7 @@ static int generateEquals( CodeGen *pCodeGen, struct Node *root )
     int b;
     int c;
     char label[7];
-    char label1[7];			/* label generation */
+    char label1[7];            /* label generation */
     FILE *fp;
 
     if( ( pCodeGen != NULL ) &&
@@ -5249,7 +5249,7 @@ static int generateLessThanOrEqual( CodeGen *pCodeGen, struct Node *root )
     int b;
     int c;
     char label[7];
-    char label1[7];			/* label generation */
+    char label1[7];            /* label generation */
     FILE *fp;
 
     if( ( pCodeGen != NULL ) &&
@@ -5315,7 +5315,7 @@ static int generateGreaterThanOrEqual( CodeGen *pCodeGen, struct Node *root )
     int b;
     int c;
     char label[7];
-    char label1[7];			/* label generation */
+    char label1[7];            /* label generation */
     FILE *fp;
 
     if( ( pCodeGen != NULL ) &&
@@ -5380,7 +5380,7 @@ static int generateLessThan( CodeGen *pCodeGen, struct Node *root )
     int b;
     int c;
     char label[7];
-    char label1[7];			/* label generation */
+    char label1[7];            /* label generation */
     FILE *fp;
 
     if( ( pCodeGen != NULL ) &&
@@ -5446,7 +5446,7 @@ static int generateGreaterThan( CodeGen *pCodeGen, struct Node *root )
     int b;
     int c;
     char label[7];
-    char label1[7];			/* label generation */
+    char label1[7];            /* label generation */
     FILE *fp;
 
     if( ( pCodeGen != NULL ) &&
