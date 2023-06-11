@@ -200,7 +200,7 @@ void main(int argc, char **argv)
 void usage( void )
 {
     printf( "usage: vexe [-c core size] [-s stack size] [-h] [-v] "
-            " [-L externals lib name]\n" );
+            " [-L externals lib name] <binary image>\n" );
     exit( 0 );
 }
 
