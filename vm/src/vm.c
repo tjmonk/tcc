@@ -179,7 +179,7 @@ int main(int argC, char *argV[])
                         " -l : show labels\n"
                         " -r : show registers\n"
                         " -v : enable verbose operation\n"
-                        " -L : specifify exernvars library\n"
+                        " -L : specify exernvars library\n"
                         " -c : set core size\n"
                         " -s : set stack size\n"
                         " -o : write out program memory\n",
@@ -301,6 +301,11 @@ int main(int argC, char *argV[])
             {
                 /* dump the core */
                 CORE_fnDump(pCore);
+            }
+
+            if( showRegs == true )
+            {
+                CORE_fnDumpRegisters( pCore, stdout );
             }
 
             if ( verbose )
