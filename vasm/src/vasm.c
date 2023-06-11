@@ -114,7 +114,6 @@ void main(int argc, char **argv)
         {
             case 'o':
                 outputFile = optarg;
-		printf("outputFile= %s\n", outputFile );
                 break;
 
             case 'c':

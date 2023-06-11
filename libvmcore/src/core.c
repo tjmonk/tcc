@@ -171,9 +171,6 @@ struct zCore
     /*! memory where the program is stored */
     uint8_t *memory;
 
-    /*! pointer to stack memory */
-    uint32_t *stack;
-
     /*! size of the stack */
     size_t stack_size;
 
@@ -802,7 +799,6 @@ void CORE_fnDump(tzCore *pCore)
     CORE_fnDumpMemory( pCore, 0, 0, fp );
 	CORE_fnDumpRegisters(pCore, fp);
     CORE_fnDumpStack(pCore, fp);
-
 	fclose(fp);
 }
 
@@ -832,7 +828,7 @@ void CORE_fnDumpRegisters(tzCore *pCore, FILE *fp)
 		return;
 	}
 
-	fprintf(fp, "registers:");
+	fprintf(fp, "\nregisters:\n");
 
 	for (i = 0; (i < 16); i++)
 	{
@@ -844,7 +840,7 @@ void CORE_fnDumpRegisters(tzCore *pCore, FILE *fp)
 	}
 
 	fprintf( fp,
-             "\nSTATUS = %x\n PC = %x  SP = %x\n",
+             "\n\nSTATUS = %x\n PC = 0x%04X  SP = 0x%04X\n\n",
              pCore->status, *(pCore->pc),
              *(pCore->sp));
 
@@ -897,29 +893,29 @@ void CORE_fnDumpRegisters(tzCore *pCore, FILE *fp)
 ==============================================================================*/
 void CORE_fnDumpStack(tzCore *pCore, FILE *fp)
 {
-    int i;
-    bool started = false;
+    int idx;
 
-    if( pCore == NULL )
+    if ( pCore != NULL )
     {
-        return;
-    }
-
-    fprintf(fp, "stack:");
-    for(i=0;i<pCore->stack_size;i++)
-    {
-        if( started == false )
+        if ( SP < CORE_SIZE )
         {
-            if( pCore->stack[i] != 0L )
-            {
-                started = true;
-                fprintf(fp, "%4d: 0x%X\n", i, pCore->stack[i]);
-            }
+            fprintf(fp, "stack:\n\n");
+            fprintf(fp, "SP = 0x%04X\n", SP);
+
+            /* calculate the index to get a full row of 16 bytes */
+            idx = SP - (SP % 16);
+
+            CORE_fnDumpMemory( pCore,
+                            idx,
+                            STACK_SIZE,
+                            fp );
         }
         else
         {
-            fprintf(fp, "%4d: 0x%X\n", i, pCore->stack[i]);
+            fprintf( fp, "stack: empty\n");
         }
+
+        fprintf( fp, "\n" );
     }
 }
 

@@ -1,4 +1,3 @@
-
 /*==============================================================================
 MIT License
 
@@ -171,8 +170,19 @@ int main(int argC, char *argV[])
                 fprintf(stderr,
                         "usage: %s [-a] [-e] [-p] [-l] [-r] [-v]"
                         " [-L <external variable handler library]"
-                        " [-c <core size (bytes)>] [-s <stack size (longwords)>]"
-                        " [-o <output file>] <input file>\n",
+                        " [-c <core size (bytes)>]"
+                        " [-s <stack size (longwords)>]"
+                        " [-o <output file>] <input file>\n\n"
+                        " -a : assemble input file\n"
+                        " -e : execute input file\n"
+                        " -p : enable postmortem core dump\n"
+                        " -l : show labels\n"
+                        " -r : show registers\n"
+                        " -v : enable verbose operation\n"
+                        " -L : specifify exernvars library\n"
+                        " -c : set core size\n"
+                        " -s : set stack size\n"
+                        " -o : write out program memory\n",
                         argV[0]);
                 return -1;
 
