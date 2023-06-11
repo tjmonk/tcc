@@ -1001,7 +1001,8 @@ void CORE_fnDumpMemory( tzCore *pCore,
 
     if( length == 0 )
     {
-        length = pCore->programSize;
+        /* round up length to multiple of 16 bytes */
+        length = ((pCore->programSize / 16) + 1) * 16;
     }
 
     for(idx = address; idx < address + length && idx < CORE_SIZE; idx++ )
