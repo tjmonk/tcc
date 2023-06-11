@@ -1,6 +1,6 @@
 int main()
 {
-	extern int __sys__test__a;
+    extern int __sys__test__a;
     extern int __sys__test__b;
     extern float __sys__test__f;
     extern int __sys__test__delay;

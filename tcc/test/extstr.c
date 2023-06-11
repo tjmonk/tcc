@@ -1,6 +1,6 @@
 int main()
 {
-	extern string __sys__test__c;
+    extern string __sys__test__c;
     extern int __sys__test__b;
     extern float __sys__test__f;
     float pi = 3.1415926535;

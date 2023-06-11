@@ -1,6 +1,5 @@
 int FindPrimes()
-
-    {
+{
     int i,j;
     int x;
     int count;
@@ -13,31 +12,30 @@ int FindPrimes()
     write("Calculating primes\n");
 
     for(i=2;i<=99;i++)
-    	{
-    	for(j=(i*2);j<=99;j+=i)
-    	    {
-    	    p[j] = 0;
-    	    };
-    	};
+    {
+        for(j=(i*2);j<=99;j+=i)
+        {
+            p[j] = 0;
+        };
+    };
 
     write("Prime Numbers\n");
 
     for(i=2;i<=99;i++)
-    	{
-    	if (p[i] == 1)
-    	    {
-    	    count++;
-    	    write(i);
-    	    writeLn();
-    	    };
-    	};
+    {
+        if (p[i] == 1)
+        {
+            count++;
+            write(i);
+            writeLn();
+        };
+    };
 
     return(count);
-    }
+}
 
 int main()
-
-    {
+{
     int num;
 
     write("Prime Number generator\n");
@@ -45,7 +43,7 @@ int main()
     num = FindPrimes();
 
     write("There are ",num," primes less than 100\n");
-    }
+}
 
 
 

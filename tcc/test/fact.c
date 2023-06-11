@@ -22,9 +22,9 @@ int main()
 
     for(i=1;i<6;i++)
     {
-    	n = fact(i);
-    	write(i," factorial is \0\",n);
-    	writeLn();
+        n = fact(i);
+        write(i," factorial is \0\",n);
+        writeLn();
     };
 }
 
