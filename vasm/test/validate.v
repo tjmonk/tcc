@@ -1,5 +1,6 @@
 ; "validate" program for the virtual machine.
 ; prevent /SYS/TEST/A from being set to a value larger than 10
+; ensure /SYS/TEST/C max length is 8
 
 	JMP G_O
 notice

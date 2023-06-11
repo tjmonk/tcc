@@ -99,7 +99,7 @@ void usage( void );
 ==============================================================================*/
 void main(int argc, char **argv)
 {
-    char *outputFile = NULL;
+    char *outputFile = "a.out";
     char *inputFile = NULL;
     size_t core_size = DEFAULT_CORE_SIZE;
     size_t stack_size = DEFAULT_STACK_SIZE;
