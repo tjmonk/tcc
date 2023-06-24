@@ -32,6 +32,10 @@ set(VMASM_HEADERS inc/asm.h inc/labels.h inc/parseinfo.h)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "${VMASM_HEADERS}")
 
+target_link_libraries( ${PROJECT_NAME}
+    vmcore
+)
+
 target_include_directories( ${PROJECT_NAME} PRIVATE . )
 
 target_include_directories( ${PROJECT_NAME} PUBLIC inc )

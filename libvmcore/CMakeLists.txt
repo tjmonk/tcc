@@ -21,7 +21,7 @@ set_target_properties( ${PROJECT_NAME} PROPERTIES
 	POSITION_INDEPENDENT_CODE ON
 )
 
-set(VMCORE_HEADERS inc/core.h inc/datatypes.h inc/externvars.h)
+set(VMCORE_HEADERS inc/vmcore/core.h inc/vmcore/datatypes.h inc/vmcore/externvars.h)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "${VMCORE_HEADERS}")
 

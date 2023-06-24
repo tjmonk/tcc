@@ -7,9 +7,6 @@ project(vm
 	DESCRIPTION "Virtual Machine Assembler"
 )
 
-find_library( LIB_VMCORE vmcore REQUIRED )
-find_library( LIB_VMASM vmasm REQUIRED )
-
 add_executable( ${PROJECT_NAME}
 	src/vm.c
 )
@@ -21,8 +18,8 @@ target_include_directories( ${PROJECT_NAME}
 target_link_libraries( ${PROJECT_NAME}
 	dl
 	rt
-	${LIB_VMCORE}
-	${LIB_VMASM}
+	vmcore
+	vmasm
 )
 
 install(TARGETS ${PROJECT_NAME}

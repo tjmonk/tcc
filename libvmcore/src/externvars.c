@@ -36,7 +36,7 @@ SOFTWARE.
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
-#include "externvars.h"
+#include <vmcore/externvars.h>
 
 /*==============================================================================
         Private Definitions

@@ -41,11 +41,11 @@ SOFTWARE.
 #include <unistd.h>
 #include <signal.h>
 #include <time.h>
-#include "core.h"
-#include "datatypes.h"
+#include <vmcore/core.h>
+#include <vmcore/datatypes.h>
 #include "ask.h"
 #include "strbuf.h"
-#include "externvars.h"
+#include <vmcore/externvars.h>
 #include "files.h"
 
 /*==============================================================================

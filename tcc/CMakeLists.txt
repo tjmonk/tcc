@@ -30,9 +30,9 @@ add_executable( ${PROJECT_NAME}
 target_include_directories( ${PROJECT_NAME} PRIVATE
     .
     inc
+    ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_BINARY_DIR}
-    ${CMAKE_BINARY_DIR}/tcc 
-    ${CMAKE_BINARY_DIR}/tcc/tcc )
+)
 
 install(TARGETS ${PROJECT_NAME}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} )
