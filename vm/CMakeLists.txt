@@ -29,6 +29,6 @@ install(TARGETS ${PROJECT_NAME}
 file(GLOB test_files "test/*.v")
 
 install( FILES ${test_files}
-	DESTINATION ${CMAKE_INSTALL_DATADIR}/${PRODJECT_NAME}
+	DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}
 )
 
