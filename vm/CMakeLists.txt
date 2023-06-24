@@ -26,9 +26,4 @@ install(TARGETS ${PROJECT_NAME}
 	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
-file(GLOB test_files "test/*.v")
-
-install( FILES ${test_files}
-	DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}
-)
 
