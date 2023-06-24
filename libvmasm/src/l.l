@@ -29,10 +29,10 @@ SOFTWARE.
         Includes
 ==============================================================================*/
 
-#include "asm.h"
+#include <vmasm/asm.h>
 #include <vmcore/core.h>
 #include "y.h"  /* include token codes from the parser */
-#include "parseinfo.h"
+#include <vmasm/parseinfo.h>
 
 /*==============================================================================
         External Variables

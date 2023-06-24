@@ -28,7 +28,7 @@ set_target_properties( ${PROJECT_NAME} PROPERTIES
 	POSITION_INDEPENDENT_CODE ON
 )
 
-set(VMASM_HEADERS inc/asm.h inc/labels.h inc/parseinfo.h)
+set(VMASM_HEADERS inc/vmasm/asm.h inc/vmasm/labels.h inc/vmasm/parseinfo.h)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "${VMASM_HEADERS}")
 

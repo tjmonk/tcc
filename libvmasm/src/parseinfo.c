@@ -39,7 +39,7 @@ SOFTWARE.
 #include <stdint.h>
 #include <ctype.h>
 #include <vmcore/datatypes.h>
-#include "parseinfo.h"
+#include <vmasm/parseinfo.h>
 
 /*==============================================================================
         Private Function Declarations

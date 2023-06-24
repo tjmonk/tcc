@@ -54,7 +54,7 @@ SOFTWARE.
 #include <sys/types.h>
 #include <sys/mman.h>
 #include <errno.h>
-#include "asm.h"
+#include <vmasm/asm.h>
 
 
 /*==============================================================================
