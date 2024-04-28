@@ -31,6 +31,6 @@ WAIT
 DONE
     CPS R4,R6      ; close print session
     CMP R10,0      ; check for exit condition
-    JPO WAIT       ; no exit yet, keep waiting for signals
+    JNZ WAIT       ; no exit yet, keep waiting for signals
     HLT
 
