@@ -841,8 +841,6 @@ static int varvm_fnOpenPrintSession( void *pExt,
                                        handle,
                                        hVar,
                                        fd );
-
-        printf("%s result = %d fd = %d\n", __func__, result, *fd );
     }
 
     return result;
