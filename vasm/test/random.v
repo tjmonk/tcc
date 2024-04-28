@@ -23,6 +23,6 @@ LOOP
     WRN R5           ; write R5 to stdout
     WRC '\n'         ; write a newline
     SUB R4,1         ; decrement the loop counter
-    JPO LOOP         ; keep going while loop counter is positive
+    JNZ LOOP         ; keep going while loop counter is positive
     CFD R3           ; close the file descriptor in R3
     HLT              ; stop the virtual machine
