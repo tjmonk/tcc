@@ -2943,7 +2943,6 @@ static void opSET(tzCore *pCore)
 static void opRDUMP(tzCore *pCore)
 {
     CORE_fnDumpRegisters(pCore, stdout);
-    if (ask("continue? y/n: ")==0) STOP;
     INC_PC(3);
 }
 
