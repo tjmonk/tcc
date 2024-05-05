@@ -378,7 +378,7 @@ output_list    :    output COMMA output_list
             { $$ = (struct Node *)createNode(OUTPUT_LIST,$1,NULL); }
          ;
 
-output        :    identifier
+output  :    identifier
             { $$ = $1;
               CheckIdent( $1, ident ); }
         |    number
@@ -1096,20 +1096,31 @@ declarator    :    identifier ASSIGN number
 
         |    identifier LBRACKET number RBRACKET
             {
-            $$ = (struct Node *)createNode(ARRAY_DECL,$1,$3);
-            $1->ident = (struct identEntry *)InsertID(ident);
-            $1->ident->type = typespec;
-            $1->type = DECL_ID;
-            offset -= size;
-            $1->ident->offset = offset;
-            size = ($3->value) * sizeof(uint32_t);
-            $1->ident->size = size;
-            #ifdef SHOW_STACK_INFO
-                printf("declarator: %s | offset: %d | size %d\n",
-                    $1->ident->name,
-                    $1->ident->offset,
-                    $1->ident->size);
-            #endif
+                if ( typespec != TYPE_STRING )
+                {
+                    $$ = (struct Node *)createNode(ARRAY_DECL,$1,$3);
+                    $1->ident = (struct identEntry *)InsertID(ident);
+                    $1->ident->type = typespec;
+                    $1->type = DECL_ID;
+                    offset -= size;
+                    $1->ident->offset = offset;
+                    size = ($3->value) * sizeof(uint32_t);
+                    $1->ident->size = size;
+                    #ifdef SHOW_STACK_INFO
+                        printf("declarator: %s | offset: %d | size %d\n",
+                            $1->ident->name,
+                            $1->ident->offset,
+                            $1->ident->size);
+                    #endif
+                }
+                else
+                {
+                    fprintf( stderr,
+                            "E: unsupported string array '%s' on line %d\n",
+                            ident,
+                            getlineno() );
+                    errorFlag = true;
+                }
             }
 
         |    identifier

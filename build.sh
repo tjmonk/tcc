@@ -1,6 +1,6 @@
 #!/bin/sh
 
-components="libvmcore libvmasm libvarvm vm vasm vexe"
+components="libvmcore libvmasm libvarvm vm vasm vexe tcc"
 
 for component in $components
 do
