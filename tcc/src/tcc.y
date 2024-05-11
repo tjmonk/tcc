@@ -261,12 +261,24 @@ function_header:        type_specifier identifier
                 /* insert new function id at scope level 0 */
                 scopeLevel = CreateNewScopeLevel();
                 $2->type = FUNC_ID;
-                $2->ident = (struct identEntry *)InsertID(ident);
-                $2->ident->type = typespec;
-                $2->ident->scopeID = scopeLevel;
-                SetScopeLevel(scopeLevel);
 
-                $$ = (struct Node *)createNode(FUNC_HDR,$1,$2);
+                SetScopeLevel(0);
+                $2->ident = (struct identEntry *)InsertID(ident,
+                                                          getlineno(),
+                                                          true);
+                if ( $2->ident != NULL )
+                {
+                    $2->ident->type = typespec;
+                    $2->ident->scopeID = scopeLevel;
+                    SetScopeLevel(scopeLevel);
+
+                    $$ = (struct Node *)createNode(FUNC_HDR,$1,$2);
+                }
+                else
+                {
+                    $$ = NULL;
+                    errorFlag = true;
+                }
             }
          ;
 
@@ -528,14 +540,14 @@ validate_end_statement: VALIDATE_END LPAREN identifier COMMA expression RPAREN
 close_print_session_statement: CLOSE_PRINT_SESSION LPAREN identifier COMMA identifier RPAREN
             {
                 $$ = (struct Node *)createNode( CLOSE_PRINT_SESSION, $3, $5 );
-                if( $3->ident->type != TYPE_INT )
+                if( ( $3->ident != NULL ) && ( $3->ident->type != TYPE_INT ) )
                 {
                     fprintf( stderr,
                              "E: Invalid type for argument 1 of close_print_session on line %d\n",
                              getlineno() + 1 );
                 }
 
-                if( $5->ident->type != TYPE_INT )
+                if( ( $5->ident != NULL ) && ( $5->ident->type != TYPE_INT ) )
                 {
                     fprintf( stderr,
                              "E: Invalid type for argument 2 of close_print_session on line %d\n",
@@ -800,14 +812,14 @@ postfix_expression
         |   OPEN_PRINT_SESSION LPAREN identifier COMMA BAND identifier RPAREN
             {
                 $$ = (struct Node *)createNode( OPEN_PRINT_SESSION, $3, $6 );
-                if( $3->ident->type != TYPE_INT )
+                if ( ( $3->ident != NULL ) && ( $3->ident->type != TYPE_INT ) )
                 {
                     fprintf( stderr,
                              "E: Invalid type for argument 1 of open_print_session on line %d\n",
                              getlineno() + 1 );
                 }
 
-                if( $6->ident->type != TYPE_INT )
+                if ( ( $6->ident != NULL ) && ( $6->ident->type != TYPE_INT ) )
                 {
                     fprintf( stderr,
                              "E: Invalid type for argument 2 of open_print_session on line %d\n",
@@ -820,7 +832,8 @@ postfix_expression
                 $$ = (struct Node *)createNode( SYSTEM, $3, NULL );
                 if( $3->type == ID )
                 {
-                    if( $3->ident->type != TYPE_STRING )
+                    if ( ( $3->ident != NULL ) &&
+                         ( $3->ident->type != TYPE_STRING ) )
                     {
                         fprintf(stderr, "E: Invalid argument to system on line %d\n", getlineno() + 1 );
                         errorFlag = true;
@@ -838,7 +851,8 @@ postfix_expression
                 $$ = (struct Node *)createNode( FILE_OPEN, $3, $5 );
                 if( $3->type == ID )
                 {
-                    if( $3->ident->type != TYPE_STRING )
+                    if ( ( $3->ident != NULL ) &&
+                         ( $3->ident->type != TYPE_STRING ) )
                     {
                         fprintf(stderr, "E: Invalid filename argument to file_open on line %d\n", getlineno() + 1 );
                         errorFlag = true;
@@ -852,7 +866,8 @@ postfix_expression
 
                 if( $5->type == ID )
                 {
-                    if( $5->ident->type != TYPE_CHAR )
+                    if ( ( $5->ident != NULL ) &&
+                         ( $5->ident->type != TYPE_CHAR ) )
                     {
                         fprintf(stderr, "E: Invalid mode argument to file_open on line %d\n", getlineno() + 1 );
                         errorFlag = true;
@@ -957,34 +972,118 @@ assignment_operator
 extern_declarator: identifier ASSIGN number
                 {
                     $$ =  (struct Node *)createNode(ASSIGN,$1,$3);
-                    $1->ident = (struct identEntry *)InsertID(ident);
-                    $1->ident->isExternal = true;
-                    $1->ident->type = typespec;
-                    TypeCheck( $$, 0, false );
-                    $1->type = DECL_ID;
-                    offset -= size;
-                    $1->ident->offset = offset;
-                    size = sizeof(uint32_t);
-                    $1->ident->size = size;
-                    offset -= sizeof( uint32_t );
-                    $1->ident->offset2 =offset;
-                    if ( $1->ident->type == TYPE_STRING )
+                    $1->ident = (struct identEntry *)InsertID(ident,
+                                                              getlineno(),
+                                                              true);
+                    if ($1->ident != NULL )
                     {
-                        $1->ident->stringBufID = ++stringBufID;
+                        $1->ident->isExternal = true;
+                        $1->ident->type = typespec;
+                        TypeCheck( $$, 0, false );
+                        $1->type = DECL_ID;
+                        offset -= size;
+                        $1->ident->offset = offset;
+                        size = sizeof(uint32_t);
+                        $1->ident->size = size;
+                        offset -= sizeof( uint32_t );
+                        $1->ident->offset2 =offset;
+                        if ( $1->ident->type == TYPE_STRING )
+                        {
+                            $1->ident->stringBufID = ++stringBufID;
+                        }
+                        #ifdef SHOW_STACK_INFO
+                            printf("declarator: %s | offset: %d | size: %d\n",
+                                    $1->ident->name,
+                                    $1->ident->offset,
+                                    $1->ident->size);
+                        #endif
                     }
-                    #ifdef SHOW_STACK_INFO
-                        printf("declarator: %s | offset: %d | size: %d\n",
-                                $1->ident->name,
-                                $1->ident->offset,
-                                $1->ident->size);
-                    #endif
+                    else
+                    {
+                        errorFlag = true;
+                    }
                 }
 
                 | identifier ASSIGN float
                 {
                     $$ =  (struct Node *)createNode(ASSIGN,$1,$3);
-                    $1->ident = (struct identEntry *)InsertID(ident);
-                    $1->ident->isExternal = true;
+                    $1->ident = (struct identEntry *)InsertID(ident,
+                                                              getlineno(),
+                                                              true);
+                    if ( $1->ident != NULL )
+                    {
+                        $1->ident->isExternal = true;
+                        $1->ident->type = typespec;
+                        TypeCheck( $$, 0, false );
+                        $1->type = DECL_ID;
+                        offset -= size;
+                        $1->ident->offset = offset;
+                        size = sizeof(uint32_t);
+                        $1->ident->size = size;
+                        offset -= sizeof( uint32_t );
+                        $1->ident->offset2 = offset;
+
+                        if ( $1->ident->type == TYPE_STRING )
+                        {
+                            $1->ident->stringBufID = ++stringBufID;
+                        }
+                        #ifdef SHOW_STACK_INFO
+                            printf("declarator: %s | offset: %d | size: %d\n",
+                                    $1->ident->name,
+                                    $1->ident->offset,
+                                    $1->ident->size);
+                        #endif
+                    }
+                    else
+                    {
+                        errorFlag = true;
+                    }
+                }
+                | identifier
+                {
+                    $$ = $1;
+                    $1->ident = (struct identEntry *)InsertID(ident,
+                                                              getlineno(),
+                                                              true);
+                    if ( $1->ident != NULL )
+                    {
+                        $1->ident->isExternal = true;
+                        $1->ident->type = typespec;
+                        $1->type = DECL_ID;
+                        offset -= size;
+                        $1->ident->offset = offset;
+                        size = sizeof(uint32_t);
+                        $1->ident->size = size;
+                        offset -= sizeof( uint32_t );
+                        $1->ident->offset2 = offset;
+
+                        if ( $1->ident->type == TYPE_STRING )
+                        {
+                            $1->ident->stringBufID = ++stringBufID;
+                        }
+
+                        #ifdef SHOW_STACK_INFO
+                            printf("declarator: %s | offset: %d | size: %d\n",
+                                $1->ident->name,
+                                $1->ident->offset,
+                                $1->ident->size);
+                        #endif
+                    }
+                    else
+                    {
+                        errorFlag = true;
+                    }
+                }
+                ;
+
+declarator    :    identifier ASSIGN number
+            {
+                $$ =  (struct Node *)createNode(ASSIGN,$1,$3);
+                $1->ident = (struct identEntry *)InsertID(ident,
+                                                        getlineno(),
+                                                        true);
+                if ( $1->ident != NULL )
+                {
                     $1->ident->type = typespec;
                     TypeCheck( $$, 0, false );
                     $1->type = DECL_ID;
@@ -992,9 +1091,6 @@ extern_declarator: identifier ASSIGN number
                     $1->ident->offset = offset;
                     size = sizeof(uint32_t);
                     $1->ident->size = size;
-                    offset -= sizeof( uint32_t );
-                    $1->ident->offset2 = offset;
-
                     if ( $1->ident->type == TYPE_STRING )
                     {
                         $1->ident->stringBufID = ++stringBufID;
@@ -1006,101 +1102,74 @@ extern_declarator: identifier ASSIGN number
                                 $1->ident->size);
                     #endif
                 }
-                | identifier
+                else
                 {
-                    $$ = $1;
-                    $1->ident = (struct identEntry *)InsertID(ident);
-                    $1->ident->isExternal = true;
+                    errorFlag = true;
+                }
+            }
+
+        |   identifier ASSIGN character
+            {
+                $$ =  (struct Node *)createNode(ASSIGN,$1,$3);
+                $1->ident = (struct identEntry *)InsertID(ident,
+                                                        getlineno(),
+                                                        true);
+                if ( $1->ident != NULL )
+                {
                     $1->ident->type = typespec;
+                    TypeCheck( $$, 0, false );
                     $1->type = DECL_ID;
                     offset -= size;
                     $1->ident->offset = offset;
                     size = sizeof(uint32_t);
                     $1->ident->size = size;
-                    offset -= sizeof( uint32_t );
-                    $1->ident->offset2 = offset;
-
                     if ( $1->ident->type == TYPE_STRING )
                     {
                         $1->ident->stringBufID = ++stringBufID;
                     }
-
                     #ifdef SHOW_STACK_INFO
                         printf("declarator: %s | offset: %d | size: %d\n",
-                            $1->ident->name,
-                            $1->ident->offset,
-                            $1->ident->size);
+                                $1->ident->name,
+                                $1->ident->offset,
+                                $1->ident->size);
                     #endif
                 }
-                ;
-
-declarator    :    identifier ASSIGN number
-            {
-            $$ =  (struct Node *)createNode(ASSIGN,$1,$3);
-            $1->ident = (struct identEntry *)InsertID(ident);
-            $1->ident->type = typespec;
-            TypeCheck( $$, 0, false );
-            $1->type = DECL_ID;
-            offset -= size;
-            $1->ident->offset = offset;
-            size = sizeof(uint32_t);
-            $1->ident->size = size;
-            if ( $1->ident->type == TYPE_STRING )
-            {
-                $1->ident->stringBufID = ++stringBufID;
-            }
-            #ifdef SHOW_STACK_INFO
-                printf("declarator: %s | offset: %d | size: %d\n",
-                        $1->ident->name,
-                        $1->ident->offset,
-                        $1->ident->size);
-            #endif
-            }
-
-        |   identifier ASSIGN character
-            {
-            $$ =  (struct Node *)createNode(ASSIGN,$1,$3);
-            $1->ident = (struct identEntry *)InsertID(ident);
-            $1->ident->type = typespec;
-            TypeCheck( $$, 0, false );
-            $1->type = DECL_ID;
-            offset -= size;
-            $1->ident->offset = offset;
-            size = sizeof(uint32_t);
-            $1->ident->size = size;
-            if ( $1->ident->type == TYPE_STRING )
-            {
-                $1->ident->stringBufID = ++stringBufID;
-            }
-            #ifdef SHOW_STACK_INFO
-                printf("declarator: %s | offset: %d | size: %d\n",
-                        $1->ident->name,
-                        $1->ident->offset,
-                        $1->ident->size);
-            #endif
+                else
+                {
+                    errorFlag = true;
+                }
             }
 
         |   identifier ASSIGN float
             {
-            $$ =  (struct Node *)createNode(ASSIGN,$1,$3);
-            $1->ident = (struct identEntry *)InsertID(ident);
-            $1->ident->type = typespec;
-            TypeCheck( $$, 0, false );
-            $1->type = DECL_ID;
-            offset -= size;
-            $1->ident->offset = offset;
-            size = sizeof(uint32_t);
-            $1->ident->size = size;
-            if ( $1->ident->type == TYPE_STRING )
-            {
-                $1->ident->stringBufID = ++stringBufID;
-            }
-            #ifdef SHOW_STACK_INFO
-                printf("declarator: %s | offset: %d | size: %d\n",
-                        $1->ident->name,
-                        $1->ident->offset,
-                        $1->ident->size);
-            #endif
+                $$ =  (struct Node *)createNode(ASSIGN,$1,$3);
+                $1->ident = (struct identEntry *)InsertID(ident,
+                                                        getlineno(),
+                                                        true);
+                if ( $1->ident != NULL )
+                {
+                    $1->ident->type = typespec;
+                    TypeCheck( $$, 0, false );
+                    $1->type = DECL_ID;
+                    offset -= size;
+                    $1->ident->offset = offset;
+                    size = sizeof(uint32_t);
+                    $1->ident->size = size;
+                    if ( $1->ident->type == TYPE_STRING )
+                    {
+                        $1->ident->stringBufID = ++stringBufID;
+                    }
+                    #ifdef SHOW_STACK_INFO
+                        printf("declarator: %s | offset: %d | size: %d\n",
+                                $1->ident->name,
+                                $1->ident->offset,
+                                $1->ident->size);
+                    #endif
+                }
+                else
+                {
+                    errorFlag = true;
+                }
             }
 
         |    identifier LBRACKET number RBRACKET
@@ -1108,19 +1177,28 @@ declarator    :    identifier ASSIGN number
                 if ( typespec != TYPE_STRING )
                 {
                     $$ = (struct Node *)createNode(ARRAY_DECL,$1,$3);
-                    $1->ident = (struct identEntry *)InsertID(ident);
-                    $1->ident->type = typespec;
-                    $1->type = DECL_ID;
-                    offset -= size;
-                    $1->ident->offset = offset;
-                    size = ($3->value) * sizeof(uint32_t);
-                    $1->ident->size = size;
-                    #ifdef SHOW_STACK_INFO
-                        printf("declarator: %s | offset: %d | size %d\n",
-                            $1->ident->name,
-                            $1->ident->offset,
-                            $1->ident->size);
-                    #endif
+                    $1->ident = (struct identEntry *)InsertID(ident,
+                                                              getlineno,
+                                                              true);
+                    if ( $1->ident != NULL )
+                    {
+                        $1->ident->type = typespec;
+                        $1->type = DECL_ID;
+                        offset -= size;
+                        $1->ident->offset = offset;
+                        size = ($3->value) * sizeof(uint32_t);
+                        $1->ident->size = size;
+                        #ifdef SHOW_STACK_INFO
+                            printf("declarator: %s | offset: %d | size %d\n",
+                                $1->ident->name,
+                                $1->ident->offset,
+                                $1->ident->size);
+                        #endif
+                    }
+                    else
+                    {
+                        errorFlag = true;
+                    }
                 }
                 else
                 {
@@ -1134,25 +1212,34 @@ declarator    :    identifier ASSIGN number
 
         |    identifier
             {
-            $$ = $1;
-            $1->ident = (struct identEntry *)InsertID(ident);
-            $1->ident->type = typespec;
-            $1->type = DECL_ID;
-            offset -= size;
-            $1->ident->offset = offset;
-            size = sizeof(uint32_t);
-            $1->ident->size = size;
-            if ( $1->ident->type == TYPE_STRING )
-            {
-                $1->ident->stringBufID = ++stringBufID;
-            }
+                $$ = $1;
+                $1->ident = (struct identEntry *)InsertID(ident,
+                                                        getlineno(),
+                                                        true);
+                if ( $1->ident != NULL )
+                {
+                    $1->ident->type = typespec;
+                    $1->type = DECL_ID;
+                    offset -= size;
+                    $1->ident->offset = offset;
+                    size = sizeof(uint32_t);
+                    $1->ident->size = size;
+                    if ( $1->ident->type == TYPE_STRING )
+                    {
+                        $1->ident->stringBufID = ++stringBufID;
+                    }
 
-            #ifdef SHOW_STACK_INFO
-                printf("declarator: %s | offset: %d | size: %d\n",
-                    $1->ident->name,
-                    $1->ident->offset,
-                    $1->ident->size);
-            #endif
+                    #ifdef SHOW_STACK_INFO
+                        printf("declarator: %s | offset: %d | size: %d\n",
+                            $1->ident->name,
+                            $1->ident->offset,
+                            $1->ident->size);
+                    #endif
+                }
+                else
+                {
+                    errorFlag = true;
+                }
             }
         ;
 
@@ -1198,17 +1285,26 @@ argument_list    :    argument COMMA argument_list
 
 parameter    :    type_specifier identifier
             {
-            offset += sizeof(uint32_t);
-            $2->type = PARAM_ID;
-            $2->ident = (struct identEntry *)InsertID(ident);
-            $2->ident->type = typespec;
-            $2->ident->offset = (2*sizeof(uint32_t))+offset;
-            $$ = (struct Node *)createNode(PARAMETER,$1,$2);
-            #ifdef SHOW_STACK_INFO
-                printf("; parameter: %s | offset: %d\n",
-                    $2->ident->name,
-                    $2->ident->offset);
-            #endif
+                offset += sizeof(uint32_t);
+                $2->type = PARAM_ID;
+                $2->ident = (struct identEntry *)InsertID(ident,
+                                                        getlineno(),
+                                                        true);
+                if ( $2->ident != NULL )
+                {
+                    $2->ident->type = typespec;
+                    $2->ident->offset = (2*sizeof(uint32_t))+offset;
+                    $$ = (struct Node *)createNode(PARAMETER,$1,$2);
+                    #ifdef SHOW_STACK_INFO
+                        printf("; parameter: %s | offset: %d\n",
+                            $2->ident->name,
+                            $2->ident->offset);
+                    #endif
+                }
+                else
+                {
+                    errorFlag = true;
+                }
             }
 
         |    { $$ = NULL; }
@@ -1268,15 +1364,27 @@ number        :    NUM
 
 charstring    :    CHARSTR
             {
-            $$ = (struct Node *)createNode(CHARSTR,NULL,NULL);
-            $$->ident = (struct identEntry *)InsertID(yytext);
+                $$ = (struct Node *)createNode(CHARSTR,NULL,NULL);
+                $$->ident = (struct identEntry *)InsertID(yytext,
+                                                        getlineno(),
+                                                        false);
+                if ( $$->ident == NULL )
+                {
+                    errorFlag = true;
+                }
             }
         ;
 
 character : CHARACTER
             {
-            $$ = (struct Node *)createNode(CHARACTER,NULL,NULL);
-            $$->ident = (struct identEntry *)InsertID(yytext);
+                $$ = (struct Node *)createNode(CHARACTER,NULL,NULL);
+                $$->ident = (struct identEntry *)InsertID(yytext,
+                                                        getlineno(),
+                                                        false);
+                if ( $$->ident == NULL )
+                {
+                    errorFlag = true;
+                }
             }
         ;
 %%

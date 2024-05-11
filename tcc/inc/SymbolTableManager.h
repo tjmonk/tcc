@@ -105,7 +105,7 @@ int CreateNewScopeLevel();
 void SetScopeLevel( int level );
 int GetScopeLevel();
 struct identEntry *LookupID( char *item, bool replace_underscores );
-struct identEntry *InsertID( char *item );
+struct identEntry *InsertID( char *item, int lineno, bool unique );
 struct identEntry *InsertConstant( char *item, int type, int val );
 void DeleteAll();
 
