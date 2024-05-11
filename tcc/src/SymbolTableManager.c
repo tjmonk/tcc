@@ -258,7 +258,7 @@ struct identEntry *LookupID( char *item, bool replace_underscores )
     @retval NULL if the id could not be inserted into the symbol table
 
 ==============================================================================*/
-struct identEntry *InsertID( char *item, int lineno, bool unique )
+struct identEntry *InsertID( char *item, int linenum, bool unique )
 {
     struct identEntry *idEntry;
     extern bool errorFlag;
@@ -267,14 +267,20 @@ struct identEntry *InsertID( char *item, int lineno, bool unique )
     if ( idEntry == NULL )
     {
         idEntry = insert( &table[scopeLevel] , item );
+        if ( idEntry != NULL )
+        {
+            /* add the line on which the identifier is found */
+            idEntry->linenum = linenum;
+        }
     }
     else if ( unique == true )
     {
         fprintf( stderr,
                  "E: identifer '%s' already exists at current scope"
-                 " on line %d\n",
+                 " on line %d.  Original declaration on line %d\n",
                  item,
-                 lineno + 1 );
+                 linenum + 1,
+                 idEntry->linenum + 1 );
 
         idEntry = NULL;
     }

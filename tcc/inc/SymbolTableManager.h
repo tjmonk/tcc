@@ -68,6 +68,9 @@ struct identEntry
         external variable */
     bool isExternal;
 
+    /*! line number */
+    int linenum;
+
     /*! identifier value */
     int value;
 
@@ -105,7 +108,7 @@ int CreateNewScopeLevel();
 void SetScopeLevel( int level );
 int GetScopeLevel();
 struct identEntry *LookupID( char *item, bool replace_underscores );
-struct identEntry *InsertID( char *item, int lineno, bool unique );
+struct identEntry *InsertID( char *item, int linenum, bool unique );
 struct identEntry *InsertConstant( char *item, int type, int val );
 void DeleteAll();
 

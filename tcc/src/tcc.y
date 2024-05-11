@@ -1178,7 +1178,7 @@ declarator    :    identifier ASSIGN number
                 {
                     $$ = (struct Node *)createNode(ARRAY_DECL,$1,$3);
                     $1->ident = (struct identEntry *)InsertID(ident,
-                                                              getlineno,
+                                                              getlineno(),
                                                               true);
                     if ( $1->ident != NULL )
                     {
@@ -1205,7 +1205,7 @@ declarator    :    identifier ASSIGN number
                     fprintf( stderr,
                             "E: unsupported string array '%s' on line %d\n",
                             ident,
-                            getlineno() );
+                            getlineno() + 1 );
                     errorFlag = true;
                 }
             }
@@ -1559,7 +1559,7 @@ static bool CheckIdent( struct Node *root, char *ident )
             fprintf( stderr,
                      "E: unknown identifier '%s' on line %d\n",
                      ident,
-                     getlineno() );
+                     getlineno() + 1 );
             errorFlag = true;
         }
     }
