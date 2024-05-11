@@ -127,7 +127,7 @@ void CORE_fnDumpMemory( tzCore *pCore,
                         FILE *fp );
 void CORE_fnDumpStack(tzCore *pCore, FILE *fp);
 bool CORE_fnLoad( tzCore *pCore, char *programFile );
-bool CORE_fnExecute( tzCore *pCore );
+int CORE_fnExecute( tzCore *pCore );
 void CORE_fnSetProgramSize( tzCore *pCore, size_t programSize );
 size_t CORE_fnGetProgramSize( tzCore *pCore );
 int CORE_fnInitExternalsLib( tzCore *pCore, char *libname );

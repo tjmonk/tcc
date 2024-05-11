@@ -1100,29 +1100,39 @@ bool CORE_fnLoad( tzCore *pCore, char *programFile )
     Execute a program
 
     The CORE_fnExecute function executes the program currently loaded into the
-    VM Core memory.
+    VM Core memory.  Upon successful execution, this function will return
+    the value of the VM register R0.
 
     @param[in]
         pCore
             pointer to the tzCore object representing the virtual memory core
 
-    @retval true program executed with no error
-    @retval false error occurred during program execution
+    @retval -1 core execution error
+    @retval value of R0 register
 
 ==============================================================================*/
-bool CORE_fnExecute(tzCore *pCore)
+int CORE_fnExecute(tzCore *pCore)
 {
     uint8_t opcode;
+    int result = -1;
 
-    pCore->running = true;
-
-    while( ( pCore->running ) && !(pCore->error) )
+    if ( pCore != NULL )
     {
-        opcode = MEMORY[PC] & 0x1F;
-        instructions0[opcode].exec(pCore);
+        pCore->running = true;
+
+        while( ( pCore->running ) && !(pCore->error) )
+        {
+            opcode = MEMORY[PC] & 0x1F;
+            instructions0[opcode].exec(pCore);
+        }
     }
 
-    return (pCore->error ? false : true );
+    if ( !pCore->error )
+    {
+        result = pCore->registers.reg[0];
+    }
+
+    return result;
 }
 
 /*==============================================================================

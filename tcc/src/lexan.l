@@ -65,6 +65,8 @@ append "append"
 length ".length"
 charat ".charAt"
 setat ".setAt"
+true "true"
+false "false"
 int "int"
 float "float"
 bool "bool"
@@ -166,6 +168,8 @@ floatnum  [-+]?[0-9]*\.[0-9]+([eE][-+]?[0-9]+)?
 {WriteLn} return(WRITELN);
 {Read} return(READ);
 {ReadLn} return(READLN);
+{true} return(VAL_TRUE);
+{false} return(VAL_FALSE);
 {int} return(TYPE_INT);
 {float} return(TYPE_FLOAT);
 {bool} return(TYPE_BOOL);

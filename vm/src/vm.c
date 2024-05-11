@@ -82,6 +82,7 @@ int main(int argC, char *argV[])
     int c;
     tzVMState vmstate;
     size_t prog_size;
+    int result = 0;
 
     /* flag for post-mortem dump */
     bool postMortem = false;
@@ -295,7 +296,8 @@ int main(int argC, char *argV[])
             fprintf(stdout, "Executing binary image\n");
         }
 
-        if( CORE_fnExecute( pCore ) == true )
+        result = CORE_fnExecute( pCore );
+        if ( result != -1 )
         {
             if (postMortem)
             {
@@ -317,7 +319,7 @@ int main(int argC, char *argV[])
         {
             /* always dump the core if the program fails */
             CORE_fnDump(pCore);
-
+            CORE_fnDumpRegisters(pCore, stderr);
             if ( verbose )
             {
                 printf("program terminated.\n");
@@ -328,7 +330,7 @@ int main(int argC, char *argV[])
     /* shutdown the "extern" library */
     CORE_fnShutdownExternalsLib( pCore );
 
-    return 0;
+    return result;
 }
 
 

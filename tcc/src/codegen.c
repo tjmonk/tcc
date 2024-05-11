@@ -3260,6 +3260,7 @@ static int generateOutputID( CodeGen *pCodeGen,
                 fprintf( fp, "\t\t;output character!!\n" );
                 break;
 
+            case TYPE_BOOL:
             case TYPE_INT:
                 fprintf( fp, "\tWRN R%d", a );
                 fprintf( fp, "\t\t;output integer\n" );

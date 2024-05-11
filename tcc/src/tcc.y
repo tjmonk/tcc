@@ -82,6 +82,8 @@ int yylex();
 void yyerror();
 
 static bool CheckIdent( struct Node *root, char *ident );
+static bool CheckMain( struct Node *root );
+static int ParamCount( struct Node *root );
 
 %}
 
@@ -138,6 +140,9 @@ static bool CheckIdent( struct Node *root, char *ident );
 %token CHARACTER
 %token FLOAT
 %token EXTERN
+
+%token VAL_TRUE
+%token VAL_FALSE
 
 %token TYPE_INT
 %token TYPE_FLOAT
@@ -230,10 +235,13 @@ program        :        function_definition_list
                ;
 
 function_definition_list
-        :     function_definition function_definition_list
+        :   function_definition function_definition_list
             {
-            $$ = (struct Node *)createNode(FUNC_DEF_LIST,$1,$2);
-            SetScopeLevel(0);
+                if ( CheckMain( $1 ) == true )
+                {
+                    $$ = (struct Node *)createNode(FUNC_DEF_LIST,$1,$2);
+                    SetScopeLevel(0);
+                }
             }
 
         |     { $$ = NULL; }
@@ -242,23 +250,24 @@ function_definition_list
 function_definition
         :     function_header function_header1 compound_statement
 
-            { $$ = (struct Node *)createNode(FUNC_DEF,$1,
-                (struct Node *)createNode(FUNC_DEF1,$2,$3)); }
+            {
+                $$ = (struct Node *)createNode(FUNC_DEF,$1,
+                (struct Node *)createNode(FUNC_DEF1,$2,$3));
+            }
         ;
 
 function_header:        type_specifier identifier
+            {
+                /* insert new function id at scope level 0 */
+                scopeLevel = CreateNewScopeLevel();
+                $2->type = FUNC_ID;
+                $2->ident = (struct identEntry *)InsertID(ident);
+                $2->ident->type = typespec;
+                $2->ident->scopeID = scopeLevel;
+                SetScopeLevel(scopeLevel);
 
-                        {
-            /* insert new function id at scope level 0 */
-            scopeLevel = CreateNewScopeLevel();
-            $2->type = FUNC_ID;
-            $2->ident = (struct identEntry *)InsertID(ident);
-            $2->ident->type = typespec;
-            $2->ident->scopeID = scopeLevel;
-            SetScopeLevel(scopeLevel);
-
-                        $$ = (struct Node *)createNode(FUNC_HDR,$1,$2);
-                        }
+                $$ = (struct Node *)createNode(FUNC_HDR,$1,$2);
+            }
          ;
 
 function_header1:    LPAREN parameter_list RPAREN
@@ -378,18 +387,18 @@ output_list    :    output COMMA output_list
             { $$ = (struct Node *)createNode(OUTPUT_LIST,$1,NULL); }
          ;
 
-output  :    identifier
+output  :   identifier
             { $$ = $1;
               CheckIdent( $1, ident ); }
-        |    number
+        |   number
             { $$ = $1; }
         |   float
             { $$ = $1; }
-        |     charstring
+        |   charstring
             { $$ = $1; }
-        |    character
+        |   character
             { $$ = $1; }
-        |    { $$ = NULL; }
+        |   { $$ = NULL; }
         ;
 
 append_list    :    append COMMA append_list
@@ -1245,6 +1254,16 @@ number        :    NUM
             $$ = (struct Node *)createNode(NUM,NULL,NULL);
             $$->value = strtoul(yytext+2, NULL, 16);
             }
+            |   VAL_TRUE
+            {
+                $$ = (struct Node *)createNode(NUM,NULL,NULL);
+                $$->value = 1;
+            }
+            |   VAL_FALSE
+            {
+                $$ = (struct Node *)createNode(NUM,NULL,NULL);
+                $$->value = 0;
+            }
         ;
 
 charstring    :    CHARSTR
@@ -1287,6 +1306,116 @@ void yyerror()
     errorFlag = true;
 }
 
+/*============================================================================*/
+/*  CheckMain                                                                 */
+/*!
+    Check that the main() function returns an int and has no arguments
+
+    The main() function in a TC program must have the following form:
+
+    int main()
+
+    This function validates that main() complies with this rule.
+
+    @param[in]
+        root
+            pointer to the Node to check
+
+    @retval true main is ok
+    @retval false main not compliant
+
+==============================================================================*/
+static bool CheckMain( struct Node *root )
+{
+    int result = true;
+    struct Node *pFnHeader;
+    struct Node *pFnHeader1;
+    struct Node *pIdent;
+    int numParams;
+
+    struct identEntry *ident;
+
+    if ( root != NULL )
+    {
+        if ( root->type == FUNC_DEF )
+        {
+            pFnHeader = root->left;
+            pFnHeader1 = root->right;
+
+            if( ( pFnHeader != NULL ) &&
+                ( pFnHeader1 != NULL ) &&
+                ( pFnHeader->type == FUNC_HDR ) &&
+                ( pFnHeader1->type == FUNC_DEF1 ))
+            {
+                pIdent = pFnHeader->right;
+                if ( pIdent != NULL )
+                {
+                    ident = pIdent->ident;
+                    if ( ident != NULL )
+                    {
+                        if ( strcmp( ident->name, "main" ) == 0 )
+                        {
+                            if ( ident->type != TYPE_INT )
+                            {
+                                fprintf( stderr,
+                                        "E: Function main() must return int "
+                                        "on line %d\n",
+                                        getlineno() + 1 );
+                                errorFlag = true;
+                            }
+
+                            numParams = ParamCount( pFnHeader1->left );
+                            if ( numParams != 0 )
+                            {
+                                fprintf( stderr,
+                                        "E: Function main() must take no "
+                                        "arguments on line %d\n",
+                                        getlineno() + 1 );
+                                errorFlag = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return result;
+}
+
+/*============================================================================*/
+/*  ParamCount                                                                */
+/*!
+    Count the number of parameters in the parameter list
+
+    The ParamCount() function recursively counts the number of parameters in the
+    parameter list for a function.
+
+    @param[in]
+        root
+            pointer to the node to check
+
+    @retval count of parameter nodes
+
+==============================================================================*/
+static int ParamCount( struct Node *root )
+{
+    int count = 0;
+
+    if ( root != NULL )
+    {
+        if ( root->type == PARAM_LIST )
+        {
+            count = ParamCount( root->left ) + ParamCount( root->right );
+        }
+        else if ( root->type == PARAMETER )
+        {
+            count = 1;
+        }
+    }
+
+    return count;
+}
 /*============================================================================*/
 /*  CheckIdent                                                                */
 /*!

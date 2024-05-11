@@ -66,7 +66,7 @@ SOFTWARE.
 /*==============================================================================
         Public function declarations
 ==============================================================================*/
-void main( int argc, char **argv );
+int main( int argc, char **argv );
 
 /*==============================================================================
         Private function declarations
@@ -93,10 +93,11 @@ void usage( void );
         argv
             array of pointers to the command line arguments
 
-    @return none
+    @retval -1 Core Execution Failed
+    @retval other value of VM core register R0
 
 ==============================================================================*/
-void main(int argc, char **argv)
+int main(int argc, char **argv)
 {
     char *inputFile = NULL;
     size_t core_size = DEFAULT_CORE_SIZE;
@@ -104,6 +105,7 @@ void main(int argc, char **argv)
     char *externalsLib = NULL;
     bool verbose = false;
     tzCore *pCore;
+    int result = -1;
     int c;
 
     while( ( c = getopt( argc, argv, "L:c:s:hv" ) ) != -1 )
@@ -155,7 +157,8 @@ void main(int argc, char **argv)
             if( CORE_fnLoad( pCore, inputFile ) == true )
             {
                 /* execute the program */
-                if( CORE_fnExecute( pCore ) == true )
+                result = CORE_fnExecute( pCore );
+                if( result != -1 )
                 {
                     if( verbose )
                     {
@@ -186,6 +189,8 @@ void main(int argc, char **argv)
     {
         fprintf( stderr, "No execution binary specified\n" );
     }
+
+    return result;
 }
 
 /*============================================================================*/
