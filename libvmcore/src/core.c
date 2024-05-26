@@ -141,6 +141,12 @@ SOFTWARE.
             fprintf(fp, "\n"); \
             }
 
+/*! BYTE mask */
+#define BYTE_MASK ( 0x80 )
+
+/*! WORD mask */
+#define WORD_MASK ( 0x40 )
+
 /*! the tzRegBytes object maps a 32-bit register to its bytes */
 typedef struct zRegBytes
 {
@@ -2134,13 +2140,22 @@ static void opSHR(tzCore *pCore)
     register uint32_t val;
 
     /* shift data as unsigned type so the sign bit is not preserved */
-
     reg = MEMORY[PC+1] & 0x0F;
-    shift = core_fnGetUnsignedData( pCore, MEMORY, PC, 2);
+    shift = MEMORY[PC+2] & 0x1F;
     val = REG[reg];
+    if ( MEMORY[PC] & BYTE_MASK )
+    {
+        /*  byte operation */
+        val &= 0xFF;
+    }
+    else if ( MEMORY[PC] & WORD_MASK )
+    {
+        /* word operation */
+        val &= 0xFFFF;
+    }
     val >>= shift;
     REG[reg] = val;
-    INC_PC(2);
+    INC_PC(3);
 }
 
 /*============================================================================*/
@@ -2167,9 +2182,19 @@ static void opSHL(tzCore *pCore)
     reg = MEMORY[PC+1] & 0x0F;
     shift = core_fnGetUnsignedData( pCore, MEMORY, PC, 2);
     val = REG[reg];
+    if ( MEMORY[PC] & BYTE_MASK )
+    {
+        /*  byte operation */
+        val &= 0xFF;
+    }
+    else if ( MEMORY[PC] & WORD_MASK )
+    {
+        /* word operation */
+        val &= 0xFFFF;
+    }
     val <<= shift;
     REG[reg] = val;
-    INC_PC(2);
+    INC_PC(3);
 }
 
 /*============================================================================*/
