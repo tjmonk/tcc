@@ -895,7 +895,17 @@ postfix_expression
         ;
 
 primary_expression
-        :    identifier
+        :  VAL_TRUE
+            {
+                $$ = (struct Node *)createNode(NUM,NULL,NULL);
+                $$->value = 1;
+            }
+        |   VAL_FALSE
+            {
+                $$ = (struct Node *)createNode(NUM,NULL,NULL);
+                $$->value = 0;
+            }
+        |  identifier
             {
                 CheckIdent( $1, ident );
                 $$ = $1;
